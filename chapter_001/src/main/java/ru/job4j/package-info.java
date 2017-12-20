@@ -1,5 +1,5 @@
 /**
-* Package for ferst program.
+* Package for first program.
 *
 * @author Andrey Bukhtoyarov (andreymedoed@gmail.com)
 * @version $Id$
