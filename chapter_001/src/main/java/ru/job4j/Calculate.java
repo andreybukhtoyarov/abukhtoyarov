@@ -10,7 +10,7 @@ public class Calculate {
 	
 	/**
 	*Точка входа в программу. Печатает "Привет Мир".
-	*@param агрумент типа массив строк.
+	*@param args типа массив строк.
 	*@return ничего не возвращает.
 	*/
 	public static void main(String[] args) {
