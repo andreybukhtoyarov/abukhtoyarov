@@ -39,8 +39,9 @@ public class Point {
     }
 
     public static void main(String[] args) {
-        Point a = new Point(-1, 9);
-        Point b = new Point(3, 0);
+        Point a = new Point(0, 0);
+        Point b = new Point(0, 2);
+        Point c = new Point(2, 0);
 
         System.out.println("x1 = " + a.x);
         System.out.println("y1 = " + a.y);
@@ -48,6 +49,10 @@ public class Point {
         System.out.println("y2 = " + b.y);
 
         double result = a.distanceTo(b);
+        double result2 = a.distanceTo(c);
+        double result3 = b.distanceTo(c);
         System.out.println("Расстояние между точками a и b = " + result);
+        System.out.println("Расстояние между точками a и c = " + result2);
+        System.out.println("Расстояние между точками b и c = " + result3);
     }
 }
