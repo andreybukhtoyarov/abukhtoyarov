@@ -21,4 +21,10 @@ public class MaxTest {
         Max max = new Max();
         assertThat(max.max(1, 3), is(3));
     }
+
+    @Test
+    public void whenFirstNineSecondFiveThirdFourThenReturnFirst() {
+        Max max = new Max();
+        assertThat(max.max(9, 5, 4), is(9));
+    }
 }
