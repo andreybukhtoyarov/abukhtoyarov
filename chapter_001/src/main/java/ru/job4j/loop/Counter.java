@@ -8,7 +8,7 @@ package ru.job4j.loop;
  */
 public class Counter {
     /**
-     * This method calculate sum of all numbers of multiple 2 in range between start and finish.
+     * This method calculate sum of all numbers of multiple 2 in range between start and finish..
      * @param start - start number of range.
      * @param finish - finish number of range.
      * @return sum of all numbers of multiple 2.

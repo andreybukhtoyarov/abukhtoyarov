@@ -8,7 +8,7 @@ import static org.junit.Assert.assertThat;
 public class CounterTest {
     @Test
     public void whenRangeBetweenTwoAndElevenThanThirty() {
-        // Create new counter.
+        // Create new counter..
         Counter counter = new Counter();
         // Check result (counter.add(2, 11) ) and expected.
         assertThat(
