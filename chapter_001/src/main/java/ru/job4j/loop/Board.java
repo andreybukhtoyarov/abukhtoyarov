@@ -19,19 +19,11 @@ public class Board {
 
         for (int i = 1; i <= height; ++i) {
             for (int y = 1; y <= width; ++y) {
-                if (i % 2 > 0) {
-                    if (y % 2 > 0) {
+                if (i % 2 > 0 && y % 2 > 0 || i % 2 == 0 && y % 2 == 0) {
                         screen.append("x");
                     } else {
                         screen.append(" ");
                     }
-                } else {
-                    if (y % 2 > 0) {
-                        screen.append(" ");
-                    } else {
-                        screen.append("x");
-                    }
-                }
             }
             screen.append(lineSeparator);
         }
