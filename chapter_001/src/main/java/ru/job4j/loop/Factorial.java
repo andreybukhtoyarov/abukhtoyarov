@@ -16,14 +16,15 @@ public class Factorial {
     public int calc(int n) {
         // Check the number n on positivity and integrity.
         // And calculate factorial.
+        int factorial = 1;
+
         if (n < 0 || n % 1 > 0) {
-            throw new ArithmeticException();
+            factorial = -1;
         } else {
-            int factorial = 1;
             for (int i = n; i > 0; --i) {
                 factorial = factorial * i;
             }
-            return factorial;
         }
+        return factorial;
     }
 }

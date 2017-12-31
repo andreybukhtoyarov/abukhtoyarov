@@ -28,4 +28,15 @@ public class FactorialTest {
                 is(1)
         );
     }
+
+    @Test
+    public void whenMinusOneThenException() {
+        // Create new Factorial
+        Factorial fact = new Factorial();
+        // Check result and expected.
+        assertThat(
+                fact.calc(-1),
+                is(-1)
+        );
+    }
 }
