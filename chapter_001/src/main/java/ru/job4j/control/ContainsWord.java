@@ -25,29 +25,19 @@ public class ContainsWord {
 			// indexOri индекс элементов массива ori.
 			// indexSub индекс элементов массива sub.
 			int indexOri = 0;
-			/* Берем первый символ из массива sub и сравниваем его с первым символо из массива ori.
-			 *Если они равны, берем второй символ из sub и ori массивов соответственно,
-			 *инкрементируем счетчкик совпавших символов и оба индекса итераций. И так далее.
-			 *Если символы (на любой итерации) не совпадают, мы обнуляем счетчик совпавших символов count = 0,
-			 *а так же индекс итерации массива Sub(что бы начать проверку с начала слова), а так же, если не совпали
-			 *первый символ массива Sub и любой символ второго массива - инкрементируем индекс итерации indexOri++,
-			 *т.к. с него не начинается слово.
-			 */
-			for (int indexSub = 0; indexSub < sub.length && indexOri < ori.length;) {
-				if (sub[indexSub] == ori[indexOri]) {
+			int indexSub = 0;
+			while (indexOri < ori.length && count < sub.length && indexSub < sub.length) {
+				if(sub[indexSub] == ori[indexOri]) {
 					count++;
 					indexOri++;
 					indexSub++;
 				} else {
-					if (indexSub == 0) {
-						indexOri++;
-					}
 					count = 0;
+					indexOri++;
 					indexSub = 0;
 				}
 			}
-			// Проверяем совпадает ли счетчик совпавших подряд символов с длиной второго слова.
-			if (count == sub.length) {
+			if(count == sub.length) {
 				contains = true;
 			}
 		}
