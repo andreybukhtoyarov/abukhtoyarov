@@ -69,7 +69,7 @@ public class Tracker {
      * This method create array of all array elements Tracker.
      * @return array of all array elements Tracker.
      */
-    public Item[] findAll(){
+    public Item[] getAll(){
         Item[] item = Arrays.copyOf(this.items, this.index);
         return item;
     }

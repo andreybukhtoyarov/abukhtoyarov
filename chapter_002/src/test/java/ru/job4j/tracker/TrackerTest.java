@@ -20,7 +20,7 @@ public class TrackerTest {
         tracker.add(new Item("Three", "Third_Item", 3));
         tracker.add(new Item("Four", "Fourth_Item", 4));
 
-        Item[] itemsTest = tracker.findAll();
+        Item[] itemsTest = tracker.getAll();
 
         String idOne = itemsTest[0].getId();
         String idTwo = itemsTest[1].getId();
@@ -38,7 +38,7 @@ public class TrackerTest {
         expected[1].setId(idTwo);
         expected[2].setId(idFour);
 
-        Item[] result = tracker.findAll();
+        Item[] result = tracker.getAll();
 
         assertThat(
                 expected[0].getDescription(),
@@ -65,7 +65,7 @@ public class TrackerTest {
         Item item = new Item("Name", "Description", 1234);
         tracker.add(item);
 
-        assertThat(tracker.findAll()[0], is(item));
+        assertThat(tracker.getAll()[0], is(item));
     }
 
     @Test
@@ -76,8 +76,49 @@ public class TrackerTest {
 
         tracker.add(itemOne);
 
-        tracker.replace(tracker.findAll()[0].getId(), itemTwo);
+        tracker.replace(tracker.getAll()[0].getId(), itemTwo);
 
-        assertThat(tracker.findAll()[0], is(itemTwo));
+        assertThat(tracker.getAll()[0], is(itemTwo));
+    }
+    
+    @Test
+    public void whenGetAllThenReturnArrayAllItems() {
+        Tracker tracker = new Tracker();
+        Item itemOne = new Item("One", "One description", 1);
+        Item itemTwo = new Item("Two", "Two description", 2);
+
+        tracker.add(itemOne);
+        tracker.add(itemTwo);
+
+        Item[] result = tracker.getAll();
+
+        assertThat(result[0], is(itemOne));
+        assertThat(result[1], is(itemTwo));
+        assertThat(result.length, is(2));
+    }
+
+    @Test
+    public void whenFindByIdThenReturnItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("One", "One description", 1);
+        tracker.add(item);
+        String id = tracker.getAll()[0].getId();
+
+        Item result = tracker.findById(id);
+
+        assertThat(result, is(item));
+    }
+
+    @Test
+    public void whenFindByIdWhichIsNotThenReturnNull() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("One", "One description", 1);
+        tracker.add(item);
+        String id = "8876554";
+
+        Item result = tracker.findById(id);
+        Item expected = null;
+
+        assertThat(result, is(expected));
     }
 }
