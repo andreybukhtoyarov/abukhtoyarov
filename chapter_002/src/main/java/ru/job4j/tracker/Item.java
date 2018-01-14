@@ -1,7 +1,7 @@
 package ru.job4j.tracker;
 
 /**
- * This class describe application.
+ * This class describe task.
  * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
  * @version %Id%.
  * @since 0.1.

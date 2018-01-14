@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 import org.junit.Test;
+import  org.hamcrest.core.IsNull;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -80,7 +81,7 @@ public class TrackerTest {
 
         assertThat(tracker.getAll()[0], is(itemTwo));
     }
-    
+
     @Test
     public void whenGetAllThenReturnArrayAllItems() {
         Tracker tracker = new Tracker();
@@ -91,9 +92,9 @@ public class TrackerTest {
         tracker.add(itemTwo);
 
         Item[] result = tracker.getAll();
+        Item[] expected = {itemOne, itemTwo};
 
-        assertThat(result[0], is(itemOne));
-        assertThat(result[1], is(itemTwo));
+        assertThat(result, is(expected));
         assertThat(result.length, is(2));
     }
 
@@ -117,8 +118,43 @@ public class TrackerTest {
         String id = "8876554";
 
         Item result = tracker.findById(id);
-        Item expected = null;
 
-        assertThat(result, is(expected));
+        assertThat(result, new IsNull<>());
+    }
+
+    @Test
+    public void whenFindByNameThenReturnItem() {
+        Tracker tracker = new Tracker();
+
+        Item itemOne = new Item("One", "One description 1", 1);
+        Item itemTwoFirst = new Item("Two", "Two description 2", 2);
+        Item itemTwoSecond = new Item("Two", "Two description 3", 3);
+        Item itemFour = new Item("Four", "Four description", 4);
+
+        Item[] expected = {itemTwoFirst, itemTwoSecond};
+
+        tracker.add(itemOne);
+        tracker.add(itemTwoFirst);
+        tracker.add(itemTwoSecond);
+        tracker.add(itemFour);
+
+        assertThat(tracker.findByName("Two"), is(expected));
+    }
+
+    @Test
+    public void whenFindByNameNoExistThenReturnNull() {
+        Tracker tracker = new Tracker();
+
+        Item itemOne = new Item("One", "One description 1", 1);
+        Item itemTwoFirst = new Item("Two", "Two description 2", 2);
+        Item itemTwoSecond = new Item("Two", "Two description 3", 3);
+        Item itemFour = new Item("Four", "Four description", 4);
+
+        tracker.add(itemOne);
+        tracker.add(itemTwoFirst);
+        tracker.add(itemTwoSecond);
+        tracker.add(itemFour);
+
+        assertThat(tracker.findByName("NoExist"), new IsNull<>());
     }
 }
