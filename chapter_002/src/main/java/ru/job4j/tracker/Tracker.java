@@ -31,7 +31,7 @@ public class Tracker {
      * @return unique id.
      */
     private String generateId() {
-        return String.valueOf(new Random(67).nextLong());
+        return String.valueOf(new Random().nextInt());
     }
 
     /**
@@ -54,16 +54,18 @@ public class Tracker {
      */
     public void delete(String id) {
         int index = 0;
-        for (; this.items != null && index < this.items.length; ++index) {
+        for (; this.items[index] != null && index < this.items.length; ++index) {
             if (this.items[index].getId().equals(id)) {
+                this.index--;
                 break;
+            } else if (this.items[index] == null) {
+                return;
             }
         }
         Item[] tmp = new Item[this.items.length];
         System.arraycopy(this.items, 0, tmp, 0, index);
         System.arraycopy(this.items, index + 1, tmp, index, this.items.length - index - 1);
         items = Arrays.copyOf(tmp, tmp.length);
-        this.index--;
     }
 
     /**
