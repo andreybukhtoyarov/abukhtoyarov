@@ -17,7 +17,7 @@ public class StartUI {
      * @param input - system input.
      * @param tracker - task Tracker.
      */
-    public StartUI(Input input, Tracker tracker) {
+    protected StartUI(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
@@ -39,7 +39,7 @@ public class StartUI {
     /**
      * This method is main program cycle.
      */
-    private void init() {
+    protected void init() {
         boolean exit = false;
         while (!exit) {
             showMenu();
@@ -155,7 +155,6 @@ public class StartUI {
             System.out.println("Описание заявки : " + item.getDescription());
         } else {
             System.out.println("------------ Вы ввели не существующий id ------------");
-            return;
         }
     }
 
@@ -175,7 +174,6 @@ public class StartUI {
             }
         } else {
             System.out.println("------------ Вы ввели не существующее имя ------------");
-            return;
         }
     }
 
