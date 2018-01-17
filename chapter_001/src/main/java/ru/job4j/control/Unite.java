@@ -18,9 +18,9 @@ public class Unite {
 
         int indexFirst = 0;
         int indexSecond = 0;
-        while(array.length > indexFirst + indexSecond) {
+        while (array.length > indexFirst + indexSecond) {
             if (indexFirst < first.length && indexSecond < second.length) {
-                if(first[indexFirst] < second[indexSecond]) {
+                if (first[indexFirst] < second[indexSecond]) {
                     array[indexFirst + indexSecond] = first[indexFirst++];
                 } else {
                     array[indexFirst + indexSecond] = second[indexSecond++];

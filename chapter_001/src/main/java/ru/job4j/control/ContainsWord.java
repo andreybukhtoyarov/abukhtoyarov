@@ -27,7 +27,7 @@ public class ContainsWord {
 			int indexOri = 0;
 			int indexSub = 0;
 			while (indexOri < ori.length && count < sub.length && indexSub < sub.length) {
-				if(sub[indexSub] == ori[indexOri]) {
+				if (sub[indexSub] == ori[indexOri]) {
 					count++;
 					indexOri++;
 					indexSub++;
@@ -37,7 +37,7 @@ public class ContainsWord {
 					indexSub = 0;
 				}
 			}
-			if(count == sub.length) {
+			if (count == sub.length) {
 				contains = true;
 			}
 		}

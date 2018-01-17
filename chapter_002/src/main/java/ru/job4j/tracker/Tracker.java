@@ -42,6 +42,7 @@ public class Tracker {
     public void replace(String id, Item item) {
         for (int index = 0; this.items != null && index < this.items.length; ++index) {
             if (this.items[index].getId().equals(id)) {
+                item.setId(this.generateId() + item.getCreate());
                 this.items[index] = item;
                 break;
             }
@@ -109,7 +110,7 @@ public class Tracker {
             if (item != null && item.getId().equals(id)) {
                 result = item;
                 break;
-            } else {
+            } else if (item == null) {
                 break;
             }
         }

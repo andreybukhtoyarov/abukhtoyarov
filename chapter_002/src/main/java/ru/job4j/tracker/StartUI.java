@@ -131,12 +131,15 @@ public class StartUI {
         Item[] itemsArray = this.tracker.getAll();
 
         for (int index = 0; index < itemsArray.length; ++index) {
-            if (!id.equals(itemsArray[index].getId()) && index == itemsArray.length - 1) {
+            if (id.equals(itemsArray[index].getId())) {
+                this.tracker.delete(id);
+                System.out.println("------------ Заявка успешно удалена ------------");
+                break;
+            } else if (index == itemsArray.length - 1) {
                 System.out.println("------------ Вы ввели не существующий id ------------");
                 return;
             }
         }
-        this.tracker.delete(id);
     }
 
     /**
