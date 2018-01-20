@@ -104,22 +104,20 @@ public class StartUI {
     private void editItem() {
         System.out.println("------------ Редактируем заявку по id ------------");
         String id = this.input.ask("Введите id заявки :");
-        Item itemNew = null;
         Item[] itemsArray = this.tracker.getAll();
 
         for (int index = 0; index < itemsArray.length; ++index) {
             if (itemsArray[index].getId().equals(id)) {
                 String name = this.input.ask("Введите новое имя заявки :");
                 String description = this.input.ask("Введите новое описание заявки :");
-                itemNew = new Item(name, description, System.currentTimeMillis());
+                Item itemNew = new Item(name, description, System.currentTimeMillis());
+                this.tracker.replace(id, itemNew);
+                System.out.println("------------ Заявка успешно отредактирована ------------");
                 break;
             } else if (index == itemsArray.length - 1) {
                 System.out.println("------------ Вы ввели не существующий id ------------");
-                return;
             }
         }
-        this.tracker.replace(id, itemNew);
-        System.out.println("------------ Заявка успешно отредактирована ------------");
     }
 
     /**
@@ -137,7 +135,6 @@ public class StartUI {
                 break;
             } else if (index == itemsArray.length - 1) {
                 System.out.println("------------ Вы ввели не существующий id ------------");
-                return;
             }
         }
     }
