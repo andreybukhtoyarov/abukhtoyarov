@@ -20,4 +20,10 @@ public class StubInput implements Input {
         System.out.println(message);
         return this.answers[this.position++];
     }
+
+    @Override
+    public int ask(String message, int[] range) {
+        System.out.println(message);
+        return Integer.parseInt(this.answers[this.position++]);
+    }
 }

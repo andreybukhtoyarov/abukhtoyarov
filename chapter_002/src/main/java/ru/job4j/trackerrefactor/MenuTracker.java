@@ -13,10 +13,20 @@ public class MenuTracker {
     private Tracker tracker;
     /**Field with array of user actions.*/
     private UserAction[] actions = new UserAction[6];
+    /**Field with array of range menu.*/
+    private int[] range = {0, 1, 2, 3, 4, 5};
 
     MenuTracker(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
+    }
+
+    /**
+     * Getter for range menu.
+     * @return - range menu.
+     */
+    public int[] getRange() {
+        return this.range;
     }
 
     /**

@@ -20,4 +20,22 @@ public class ConsoleInput implements Input {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
+
+    @Override
+    public int ask(String message, int[] range) {
+        int key = Integer.parseInt(this.ask(message));
+        boolean exist = false;
+        for (int value : range) {
+            if (value == key) {
+                exist = true;
+            }
+        }
+
+        if (exist) {
+            return key;
+        } else {
+            throw new MenuOutException("Выход за рамки меню.");
+        }
+    }
+
 }

@@ -13,4 +13,6 @@ interface Input {
      * @return users answer.
      */
     String ask(String message);
+
+    int ask(String message, int[] range);
 }
