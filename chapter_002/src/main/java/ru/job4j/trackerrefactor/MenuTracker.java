@@ -33,12 +33,12 @@ public class MenuTracker {
      * This method filled actions array.
      */
     public void fillActions() {
-        this.actions[0] = new AddItem();
-        this.actions[1] = new ShowItems();
-        this.actions[2] = new EditItem();
-        this.actions[3] = new DeleteItem();
-        this.actions[4] = new FindById();
-        this.actions[5] = new FindByName();
+        this.actions[0] = new AddItem(0, "Добавить новую заявку");
+        this.actions[1] = new ShowItems(1, "Показать все заявки");
+        this.actions[2] = new EditItem(2, "Редактировать заявку");
+        this.actions[3] = new DeleteItem(3, "Удалить заявку");
+        this.actions[4] = new FindById(4, "Найти заявку по id");
+        this.actions[5] = new FindByName(5, "Найти заявку по имени");
     }
 
     /**
@@ -61,11 +61,10 @@ public class MenuTracker {
     /**
      * This class contain method which create task and add it to Tracker.
      */
-    private class AddItem implements UserAction {
+    private class AddItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 0;
+        public AddItem(int key, String info) {
+            super(key, info);
         }
 
         /**
@@ -83,25 +82,20 @@ public class MenuTracker {
             System.out.println("------------ Заявка добавлена, id заявки : " + item.getId() + " ------------");
         }
 
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Добавить новую заявку");
-        }
     }
 
     /**
      * This class contain method which find task by id.
      */
-    private class FindById implements UserAction {
+    private class FindById extends BaseAction {
 
-        @Override
-        public int key() {
-            return 4;
+        public FindById(int key, String info) {
+            super(key, info);
         }
 
         /**
          * This method find task by id.
-         * @param input - input.
+         * @param input   - input.
          * @param tracker - tracker.
          */
         @Override
@@ -117,21 +111,15 @@ public class MenuTracker {
                 System.out.println("------------ Вы ввели не существующий id ------------");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Найти заявку по id");
-        }
     }
 
     /**
      * This class contain method which show all task in Tracker.
      */
-    private static class ShowItems implements UserAction {
+    private static class ShowItems extends BaseAction {
 
-        @Override
-        public int key() {
-            return 1;
+        public ShowItems(int key, String info) {
+            super(key, info);
         }
 
         /**
@@ -150,21 +138,15 @@ public class MenuTracker {
             }
             System.out.println("------------ Все заявки показаны------------");
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Показать все заявки");
-        }
     }
 
     /**
      * This class contain method which delete task by id.
      */
-    private static class DeleteItem implements UserAction {
+    private static class DeleteItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 3;
+        public DeleteItem(int key, String info) {
+            super(key, info);
         }
 
         /**
@@ -188,22 +170,16 @@ public class MenuTracker {
                 }
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Удалить заявку");
-        }
     }
 }
 
 /**
  * This class contain method which edit task by id.
  */
-class EditItem implements UserAction {
+class EditItem extends BaseAction {
 
-    @Override
-    public int key() {
-        return 2;
+    public EditItem(int key, String info) {
+        super(key, info);
     }
 
     /**
@@ -230,21 +206,15 @@ class EditItem implements UserAction {
             }
         }
     }
-
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Редактировать заявку");
-    }
 }
 
 /**
  * This class contain method find task by name.
  */
-class FindByName  implements UserAction {
+class FindByName extends BaseAction {
 
-    @Override
-    public int key() {
-        return 5;
+    public FindByName(int key, String info) {
+        super(key, info);
     }
 
     /**
@@ -267,10 +237,5 @@ class FindByName  implements UserAction {
         } else {
             System.out.println("------------ Вы ввели не существующее имя ------------");
         }
-    }
-
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Найти заявку по имени");
     }
 }
