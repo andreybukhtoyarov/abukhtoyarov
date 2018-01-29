@@ -25,7 +25,7 @@ public class StartUITest {
             .add("0. Добавить новую заявку").add("1. Показать все заявки").add("2. Редактировать заявку")
             .add("3. Удалить заявку").add("4. Найти заявку по id").add("5. Найти заявку по имени")
             .add("Введите пункт меню : ").toString();
-    private final String after = "Выйти? y или n : ";
+    private final String after = "Выйти? y или n : \n";
 
     @Before
     public void loadOutput() {
@@ -87,20 +87,20 @@ public class StartUITest {
         String expected = new StringJoiner(System.lineSeparator())
                 .add(this.before)
                 .add("------------ Все заявки ------------")
-                .add("id заявки : " + this.tracker.getAll()[0].getId())
-                .add("Название заявки : " + this.tracker.getAll()[0].getName())
-                .add("Описание заявки : " + this.tracker.getAll()[0].getDescription())
-                .add("------------ Конец заявки " + this.tracker.getAll()[0].getId() + " ------------")
-                .add("id заявки : " + this.tracker.getAll()[1].getId())
-                .add("Название заявки : " + this.tracker.getAll()[1].getName())
-                .add("Описание заявки : " + this.tracker.getAll()[1].getDescription())
-                .add("------------ Конец заявки " + this.tracker.getAll()[1].getId() + " ------------")
-                .add("id заявки : " + this.tracker.getAll()[2].getId())
-                .add("Название заявки : " + this.tracker.getAll()[2].getName())
-                .add("Описание заявки : " + this.tracker.getAll()[2].getDescription())
-                .add("------------ Конец заявки " + this.tracker.getAll()[2].getId() + " ------------")
+                .add(String.format("%s %s", "id заявки :", this.tracker.getAll()[0].getId()))
+                .add(String.format("%s %s", "Название заявки :", this.tracker.getAll()[0].getName()))
+                .add(String.format("%s %s", "Описание заявки :", this.tracker.getAll()[0].getDescription()))
+                .add(String.format("%s %s %s", "------------ Конец заявки", this.tracker.getAll()[0].getId(), "------------"))
+                .add(String.format("%s %s", "id заявки :", this.tracker.getAll()[1].getId()))
+                .add(String.format("%s %s", "Название заявки :", this.tracker.getAll()[1].getName()))
+                .add(String.format("%s %s", "Описание заявки :", this.tracker.getAll()[1].getDescription()))
+                .add(String.format("%s %s %s", "------------ Конец заявки", this.tracker.getAll()[1].getId(), "------------"))
+                .add(String.format("%s %s", "id заявки :", this.tracker.getAll()[2].getId()))
+                .add(String.format("%s %s", "Название заявки :", this.tracker.getAll()[2].getName()))
+                .add(String.format("%s %s", "Описание заявки :", this.tracker.getAll()[2].getDescription()))
+                .add(String.format("%s %s %s", "------------ Конец заявки", this.tracker.getAll()[2].getId(), "------------"))
                 .add("------------ Все заявки показаны------------")
-                .add(after + "\n")
+                .add(after)
                 .toString();
         assertThat(out.toString(), is(expected));
     }
@@ -114,10 +114,10 @@ public class StartUITest {
                 .add(before)
                 .add("------------ Ищем заявку по id ------------")
                 .add("Введите id заявки :")
-                .add("id заявки : " + this.tracker.getAll()[1].getId())
-                .add("Название заявки : " + this.tracker.getAll()[1].getName())
-                .add("Описание заявки : " + this.tracker.getAll()[1].getDescription())
-                .add(after + "\n")
+                .add(String.format("%s %s", "id заявки :", this.tracker.getAll()[1].getId()))
+                .add(String.format("%s %s", "Название заявки :", this.tracker.getAll()[1].getName()))
+                .add(String.format("%s %s", "Описание заявки :", this.tracker.getAll()[1].getDescription()))
+                .add(after)
                 .toString();
         assertThat(out.toString(), is(expected));
     }
@@ -132,7 +132,7 @@ public class StartUITest {
                 .add("------------ Ищем заявку по id ------------")
                 .add("Введите id заявки :")
                 .add("------------ Вы ввели не существующий id ------------")
-                .add(after + "\n")
+                .add(after)
                 .toString();
         assertThat(out.toString(), is(expected));
     }
@@ -146,11 +146,11 @@ public class StartUITest {
                 .add(before)
                 .add("------------ Ищем заявку по имени ------------")
                 .add("Введите имя заявки :")
-                .add("id заявки : " + this.tracker.getAll()[1].getId())
-                .add("Название заявки : " + this.tracker.getAll()[1].getName())
-                .add("Описание заявки : " + this.tracker.getAll()[1].getDescription())
+                .add(String.format("%s %s", "id заявки :", this.tracker.getAll()[1].getId()))
+                .add(String.format("%s %s", "Название заявки :", this.tracker.getAll()[1].getName()))
+                .add(String.format("%s %s", "Описание заявки :", this.tracker.getAll()[1].getDescription()))
                 .add("------------ Конец заявки ------------")
-                .add(after + "\n")
+                .add(after)
                 .toString();
         assertThat(out.toString(), is(expected));
     }
@@ -165,7 +165,7 @@ public class StartUITest {
                 .add("------------ Ищем заявку по имени ------------")
                 .add("Введите имя заявки :")
                 .add("------------ Вы ввели не существующее имя ------------")
-                .add(after + "\n")
+                .add(after)
                 .toString();
         assertThat(out.toString(), is(expected));
     }

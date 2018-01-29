@@ -79,7 +79,10 @@ public class MenuTracker {
             String description = input.ask("Введите описание заявки :");
             Item item = new Item(name, description, System.currentTimeMillis());
             tracker.add(item);
-            System.out.println("------------ Заявка добавлена, id заявки : " + item.getId() + " ------------");
+            System.out.println(String.format(
+                    "%s %s %s",
+                    "------------ Заявка добавлена, id заявки :", item.getId(), "------------")
+            );
         }
 
     }
@@ -104,9 +107,9 @@ public class MenuTracker {
             String id = input.ask("Введите id заявки :");
             Item item = tracker.findById(id);
             if (item != null) {
-                System.out.println("id заявки : " + item.getId());
-                System.out.println("Название заявки : " + item.getName());
-                System.out.println("Описание заявки : " + item.getDescription());
+                System.out.println(String.format("%s %s","id заявки :", item.getId()));
+                System.out.println(String.format("%s %s", "Название заявки :", item.getName()));
+                System.out.println(String.format("%s %s", "Описание заявки :", item.getDescription()));
             } else {
                 System.out.println("------------ Вы ввели не существующий id ------------");
             }
@@ -131,10 +134,10 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Все заявки ------------");
             for (Item item : tracker.getAll()) {
-                System.out.println("id заявки : " + item.getId());
-                System.out.println("Название заявки : " + item.getName());
-                System.out.println("Описание заявки : " + item.getDescription());
-                System.out.println("------------ Конец заявки " + item.getId() + " ------------");
+                System.out.println(String.format("%s %s", "id заявки :", item.getId()));
+                System.out.println(String.format("%s %s", "Название заявки :", item.getName()));
+                System.out.println(String.format("%s %s", "Описание заявки :", item.getDescription()));
+                System.out.println(String.format("%s %s %s", "------------ Конец заявки", item.getId(), "------------"));
             }
             System.out.println("------------ Все заявки показаны------------");
         }
@@ -229,9 +232,9 @@ class FindByName extends BaseAction {
         Item[] items = tracker.findByName(name);
         if (items != null) {
             for (Item item : items) {
-                System.out.println("id заявки : " + item.getId());
-                System.out.println("Название заявки : " + item.getName());
-                System.out.println("Описание заявки : " + item.getDescription());
+                System.out.println(String.format("%s %s", "id заявки :", item.getId()));
+                System.out.println(String.format("%s %s", "Название заявки :", item.getName()));
+                System.out.println(String.format("%s %s", "Описание заявки :", item.getDescription()));
                 System.out.println("------------ Конец заявки ------------");
             }
         } else {
