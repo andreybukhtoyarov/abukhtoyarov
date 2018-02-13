@@ -16,33 +16,27 @@ public class CoffeeMachine {
     int[] changes(int value, int price) {
         int[] change = null;
         if (value - price > 0) {
-            /*
-             * left column - denomination of a coin.
-             * right column - count of coins.
-             */
-            int[][] coin = new int[][] {
+            final int[][] coin = new int[][] {
                     {10, 0},
                     {5, 0},
                     {2, 0},
                     {1, 0}
             };
-
             int difference = value - price;
             for (int index = 0; index < coin.length; ++index) {
                 coin[index][1] = difference / coin[index][0];
                 difference = difference - coin[index][0] * coin[index][1];
             }
-
             int changeLength = 0;
-            for (int index = 0; index < coin.length; ++index) {
-                changeLength = changeLength + coin[index][1];
+            for (int[] aCoin1 : coin) {
+                changeLength = changeLength + aCoin1[1];
             }
             change = new int[changeLength];
             int indexChange = 0;
-            for (int index = 0; index < coin.length; ++index) {
-                if (coin[index][1] > 0) {
-                    for (int indexTwo = 0; indexTwo < coin[index][1]; ++indexTwo) {
-                        change[indexChange] = coin[index][0];
+            for (int[] aCoin : coin) {
+                if (aCoin[1] > 0) {
+                    for (int indexTwo = 0; indexTwo < aCoin[1]; ++indexTwo) {
+                        change[indexChange] = aCoin[0];
                         ++indexChange;
                     }
                 }
