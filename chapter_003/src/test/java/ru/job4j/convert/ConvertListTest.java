@@ -14,7 +14,7 @@ public class ConvertListTest {
         for (int value = 1; value < 7; ++value) {
             expected.add(value);
         }
-        int[][] array = new int[][] {{1,2},{3,4},{5,6}};
+        int[][] array = new int[][] {{1, 2}, {3, 4}, {5, 6}};
         assertThat(conversion.toList(array), is(expected));
     }
 
@@ -25,7 +25,7 @@ public class ConvertListTest {
         for (int value = 1; value < 7; ++value) {
             list.add(value);
         }
-        int[][] expected = new int[][] {{1,2},{3,4},{5,6}};
+        int[][] expected = new int[][] {{1, 2}, {3, 4}, {5, 6}};
         assertThat(conversion.toArray(list, 3), is(expected));
     }
 
@@ -36,7 +36,7 @@ public class ConvertListTest {
         for (int value = 1; value < 6; ++value) {
             list.add(value);
         }
-        int[][] expected = new int[][] {{1,2},{3,4},{5,0}};
+        int[][] expected = new int[][] {{1, 2}, {3, 4}, {5, 0}};
         assertThat(conversion.toArray(list, 3), is(expected));
     }
 }
