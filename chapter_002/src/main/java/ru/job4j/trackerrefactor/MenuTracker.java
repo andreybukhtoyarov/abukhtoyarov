@@ -1,5 +1,7 @@
 package ru.job4j.trackerrefactor;
 
+import java.util.List;
+
 /**
  * This class is tracker menu and user actions.
  * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
@@ -161,16 +163,17 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Удаляем заявку по id ------------");
             String id = input.ask("Введите id заявки :");
-            Item[] itemsArray = tracker.getAll();
-
-            for (int index = 0; index < itemsArray.length; ++index) {
-                if (id.equals(itemsArray[index].getId())) {
+            boolean failure = true;
+            for (Item item : tracker.getAll()) {
+                if (id.equals(item.getId())) {
                     tracker.delete(id);
                     System.out.println("------------ Заявка успешно удалена ------------");
+                    failure = false;
                     break;
-                } else if (index == itemsArray.length - 1) {
-                    System.out.println("------------ Вы ввели не существующий id ------------");
                 }
+            }
+            if (failure) {
+                System.out.println("------------ Вы ввели не существующий id ------------");
             }
         }
     }
@@ -194,17 +197,18 @@ class EditItem extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         System.out.println("------------ Редактируем заявку по id ------------");
         String id = input.ask("Введите id заявки :");
-        Item[] itemsArray = tracker.getAll();
-
-        for (int index = 0; index < itemsArray.length; ++index) {
-            if (itemsArray[index].getId().equals(id)) {
+        boolean failure = true;
+        for (Item item : tracker.getAll()) {
+            if (item.getId().equals(id)) {
                 String name = input.ask("Введите новое имя заявки :");
                 String description = input.ask("Введите новое описание заявки :");
                 Item itemNew = new Item(name, description, System.currentTimeMillis());
                 tracker.replace(id, itemNew);
                 System.out.println("------------ Заявка успешно отредактирована ------------");
+                failure = false;
                 break;
-            } else if (index == itemsArray.length - 1) {
+            }
+            if (failure) {
                 System.out.println("------------ Вы ввели не существующий id ------------");
             }
         }
@@ -229,7 +233,7 @@ class FindByName extends BaseAction {
     public void execute(Input input, Tracker tracker) {
         System.out.println("------------ Ищем заявку по имени ------------");
         String name = input.ask("Введите имя заявки :");
-        Item[] items = tracker.findByName(name);
+        List<Item> items = tracker.findByName(name);
         if (items != null) {
             for (Item item : items) {
                 System.out.println(String.format("%s %s", "id заявки :", item.getId()));

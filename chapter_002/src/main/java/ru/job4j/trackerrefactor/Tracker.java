@@ -1,6 +1,7 @@
 package ru.job4j.trackerrefactor;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -11,9 +12,7 @@ import java.util.Random;
  */
 public class Tracker {
     /**Field array of items.*/
-    private Item[] items = new Item[100];
-    /**Field count array elements.*/
-    private int index = 0;
+    private List<Item> items = new ArrayList<>();
 
     /**
      * This method add item in tracker.
@@ -22,7 +21,7 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId() + item.getCreate());
-        this.items[index++] = item;
+        this.items.add(item);
         return item;
     }
 
@@ -40,11 +39,13 @@ public class Tracker {
      * @param item - new element.
      */
     public void replace(String id, Item item) {
-        for (int index = 0; this.items != null && index < this.items.length; ++index) {
-            if (this.items[index].getId().equals(id)) {
-                item.setId(this.generateId() + item.getCreate());
-                this.items[index] = item;
-                break;
+        if (this.items != null) {
+            for (Item value : this.items) {
+                if (id.equals(value.getId())) {
+                    item.setId(this.generateId() + item.getCreate());
+                    this.items.set(this.items.indexOf(value), item);
+                    break;
+                }
             }
         }
     }
@@ -54,46 +55,40 @@ public class Tracker {
      * @param id - id element to delete.
      */
     public void delete(String id) {
-        int index = 0;
-        for (; this.items[index] != null && index < this.items.length; ++index) {
-            if (this.items[index].getId().equals(id)) {
-                this.index--;
-                break;
-            } else if (this.items[index] == null) {
-                return;
+        if (!this.items.isEmpty()) {
+            for (Item value : this.items) {
+                if (id.equals(value.getId())) {
+                    this.items.remove(this.items.indexOf(value));
+                }
             }
         }
-        Item[] tmp = new Item[this.items.length];
-        System.arraycopy(this.items, 0, tmp, 0, index);
-        System.arraycopy(this.items, index + 1, tmp, index, this.items.length - index - 1);
-        items = Arrays.copyOf(tmp, tmp.length);
     }
 
     /**
      * This method create array of all array elements Tracker.
      * @return array of all array elements Tracker.
      */
-    public Item[] getAll() {
-        return Arrays.copyOf(this.items, this.index);
+    public List<Item> getAll() {
+        return new ArrayList<>(this.items);
     }
+
 
     /**
      * This method find array element by Name.
      * @param key - name of Item.
      * @return array of Item with the same name.
      */
-    public Item[] findByName(String key) {
-        Item[] tmp = new Item[this.items.length];
-        Item[] result = null;
-        int indexTmp = 0;
-        for (Item item : this.items) {
-            if (item != null && item.getName().equals(key)) {
-                tmp[indexTmp++] = item;
-            } else if (item == null && indexTmp > 0) {
-                result = Arrays.copyOf(tmp, indexTmp);
-                break;
-            } else if (item == null) {
-                break;
+    public List<Item> findByName(String key) {
+        List<Item> result = null;
+        if (!this.items.isEmpty()) {
+            ArrayList<Item> tmp = new ArrayList<>();
+            for (Item item : this.items) {
+                if (key.equals(item.getName())) {
+                    tmp.add(item);
+                }
+            }
+            if (!tmp.isEmpty()) {
+                result = new ArrayList<>(tmp);
             }
         }
         return result;
@@ -106,12 +101,12 @@ public class Tracker {
      */
     public Item findById(String id) {
         Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
-                break;
-            } else if (item == null) {
-                break;
+        if (!this.items.isEmpty()) {
+            for (Item item : this.items) {
+                if (item.getId().equals(id)) {
+                    result = item;
+                    break;
+                }
             }
         }
         return result;
