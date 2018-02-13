@@ -1,7 +1,6 @@
 package ru.job4j.listtomap;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class UserConvert {
@@ -10,9 +9,7 @@ public class UserConvert {
         HashMap<Integer, User> result = null;
         if (list != null) {
             result = new HashMap<>();
-            Iterator<User> iter = list.iterator();
-            while (iter.hasNext()) {
-                User user = iter.next();
+            for (User user : list) {
                 result.put(user.getId(), user);
             }
         }
