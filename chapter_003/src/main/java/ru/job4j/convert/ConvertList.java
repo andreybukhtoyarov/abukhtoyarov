@@ -52,4 +52,23 @@ public class ConvertList {
         }
         return result;
     }
+
+    /**
+     * Conversion List<int[]> to List<Integer>.
+     * @param list - list that needs to be converted.
+     * @return - List<Integer>.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = null;
+        if (list != null) {
+            result = new ArrayList<>();
+            Iterator<int[]> iter = list.iterator();
+            while (iter.hasNext()) {
+                for (int value : iter.next()) {
+                    result.add(value);
+                }
+            }
+        }
+        return result;
+    }
 }
