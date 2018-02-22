@@ -14,11 +14,11 @@ public class SortUser {
      * @param list - List with Users.
      * @return - TreeSet<> of Users.
      */
-    public Set<User> sort (List<User> list) {
+    public Set<User> sort(List<User> list) {
         return new TreeSet<>(list);
     }
 
-    public List<User> sortNameLength (List<User> list) {
+    public List<User> sortNameLength(List<User> list) {
         list.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
@@ -29,7 +29,7 @@ public class SortUser {
         return list;
     }
 
-    public List<User> sortByAllFields (List<User> list) {
+    public List<User> sortByAllFields(List<User> list) {
         list.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
