@@ -7,14 +7,6 @@ package ru.job4j.control;
  * @since 0.1.
  */
 public class CoffeeMachine {
-    /**Left column - denomination of a coins, right column - count of coins. */
-    private final int[][] coins = new int[][] {
-            {10, 0},
-            {5, 0},
-            {2, 0},
-            {1, 0}
-    };
-
     /**
      * This method return array of coins.
      * @param value - received money.
@@ -24,23 +16,28 @@ public class CoffeeMachine {
     int[] changes(int value, int price) {
         int[] change = null;
         if (value - price > 0) {
+            int coin = 10;
             int difference = value - price;
-            for (int index = 0; index < coins.length; ++index) {
-                coins[index][1] = difference / coins[index][0];
-                difference = difference - coins[index][0] * coins[index][1];
-            }
             int changeLength = 0;
-            for (int[] coin : coins) {
-                changeLength = changeLength + coin[1];
+            while (difference > 0) {
+                if (difference >= coin) {
+                    ++changeLength;
+                    difference -= coin;
+                } else {
+                    coin /= 2;
+                }
             }
+            coin = 10;
+            difference = value - price;
             change = new int[changeLength];
-            int indexChange = 0;
-            for (int[] coin : coins) {
-                if (coin[1] > 0) {
-                    for (int indexTwo = 0; indexTwo < coin[1]; ++indexTwo) {
-                        change[indexChange] = coin[0];
-                        ++indexChange;
-                    }
+            int index = 0;
+            while (difference > 0) {
+                if (difference >= coin) {
+                    difference -= coin;
+                    change[index] = coin;
+                    ++index;
+                } else {
+                    coin /= 2;
                 }
             }
         }
