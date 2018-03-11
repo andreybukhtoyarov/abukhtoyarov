@@ -4,8 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * Sort departments by separator and adding missing ones.
+ * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
+ * @version %Id%.
+ * @since 0.1.
+ */
 public class Sort {
-
+    /**
+     * Adding missing ones.
+     * @param array - array with list departments.
+     * @return augmented array.
+     */
     public String[] addDepartments(String[] array) {
         ArrayList<String> departmentsList = new ArrayList<>(Arrays.asList(array));
         for (String line : array) {
@@ -26,16 +36,23 @@ public class Sort {
         return departmentsList.toArray(new String[departmentsList.size()]);
     }
 
-    public String[] ascendingSort(String[] array) {
+    /**
+     * Generalized method for comparison.
+     * @param array - array with list departments.
+     * @param sorter - comparator.
+     * @param splitter - separator.
+     * @return sorted array.
+     */
+    private String[] execute(String[] array, Compare sorter, String splitter) {
         String[] addedDepartments = addDepartments(array);
         Arrays.sort(addedDepartments, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                int lengthOne = o1.split("/").length;
-                int lengthTwo = o2.split("/").length;
+                int lengthOne = o1.split(splitter).length;
+                int lengthTwo = o2.split(splitter).length;
                 int comp = 0;
                 for (int index = 0; index < (lengthOne < lengthTwo ? lengthOne : lengthTwo); ++index) {
-                    comp = o1.split("/")[index].compareTo(o2.split("/")[index]);
+                    comp = sorter.comparing(o1, o2, index, splitter);
                     if (comp == 0 && lengthOne != lengthTwo) {
                         comp = lengthOne < lengthTwo ? -1 : 1;
                         break;
@@ -49,26 +66,21 @@ public class Sort {
         return addedDepartments;
     }
 
+    /**
+     * Ascending sort.
+     * @param array - array with list departments.
+     * @return sorted array.
+     */
+    public String[] ascendingSort(String[] array) {
+        return execute(array, new AscendingSort(), "/");
+    }
+
+    /**
+     * Descending sort.
+     * @param array - array with list departments.
+     * @return sorted array.
+     */
     public String[] descendingSort(String[] array) {
-        String[] addedDepartments = addDepartments(array);
-        Arrays.sort(addedDepartments, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                int lengthOne = o1.split("/").length;
-                int lengthTwo = o2.split("/").length;
-                int comp = 0;
-                for (int index = 0; index < (lengthOne < lengthTwo ? lengthOne : lengthTwo); ++index) {
-                    comp = o2.split("/")[index].compareTo(o1.split("/")[index]);
-                    if (comp == 0 && lengthOne != lengthTwo) {
-                        comp = lengthOne < lengthTwo ? -1 : 1;
-                        break;
-                    } else if (comp != 0) {
-                        break;
-                    }
-                }
-                return comp;
-            }
-        });
-        return addedDepartments;
+        return execute(array, new DescendingSort(), "/");
     }
 }
