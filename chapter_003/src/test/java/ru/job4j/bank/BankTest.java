@@ -108,7 +108,7 @@ public class BankTest {
     @Test
     public void whenGetUserAccountsFromNotExistUserThenIsNull() {
         List<Account> result = this.bank.getUserAccounts("0000");
-        assertThat(result, new IsNull<>());
+        assertThat(result, is(new ArrayList<Account>()));
     }
 
     @Test

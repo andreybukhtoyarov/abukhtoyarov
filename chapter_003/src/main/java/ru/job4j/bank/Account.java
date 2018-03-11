@@ -32,22 +32,6 @@ public class Account {
         this.value = value;
     }
 
-    /**
-     * Compares requisite from the account list with the specified account.
-     * @param accounts - account list.
-     * @return - true if requisite is equals.
-     */
-    public boolean requisitesEquals(List<Account> accounts) {
-        boolean result = false;
-        for (Account accountUser : accounts) {
-            if (this.getRequisites().equals(accountUser.getRequisites())) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -57,7 +41,7 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return Double.compare(account.value, value) == 0 && Objects.equals(requisites, account.requisites);
+        return this.requisites.equals(account.requisites);
     }
 
     @Override
