@@ -48,8 +48,8 @@ public class Sort {
         Arrays.sort(addedDepartments, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                int lengthOne = o1.split(splitter).length;
-                int lengthTwo = o2.split(splitter).length;
+                int lengthOne = o1.length();
+                int lengthTwo = o2.length();
                 int comp = 0;
                 for (int index = 0; index < (lengthOne < lengthTwo ? lengthOne : lengthTwo); ++index) {
                     comp = sorter.comparing(o1, o2, index, splitter);
