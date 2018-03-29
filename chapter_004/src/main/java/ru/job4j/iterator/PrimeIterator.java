@@ -14,27 +14,23 @@ public class PrimeIterator implements Iterator {
     }
 
     /**
-     * Return index of even number in array.
-     * @return {@code -1} if there are no more items
+     * If number is prime return true.
+     * @return if number is prime return true.
      */
-    private int getIndex() {
-        int result = -1;
-        outer:
-        for (int iteration = this.index; iteration < this.numbers.length; ++iteration) {
-            if (this.numbers[iteration] == 2 || this.numbers[iteration] == 3) {
-                result = iteration;
-                break;
-            }
-            for (int divider = 2; divider <= Math.sqrt(this.numbers[iteration]); ++divider) {
-                if (this.numbers[iteration] % divider == 0) {
+    private boolean isPrime(int number) {
+        boolean isPrime = false;
+        if (number == 2 || number == 3) {
+            isPrime = true;
+        } else {
+            for (int divider = 2; divider <= Math.sqrt(number); ++divider) {
+                if (number % divider == 0) {
                     break;
-                } else if (divider == (int) Math.sqrt(this.numbers[iteration])) {
-                    result = iteration;
-                    break outer;
+                } else if (divider == (int) Math.sqrt(number)) {
+                    isPrime = true;
                 }
             }
         }
-        return result;
+        return isPrime;
     }
 
     /**
@@ -43,9 +39,13 @@ public class PrimeIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        boolean hasNext = true;
-        if (this.numbers.length == 0 || getIndex() < 0) {
-            hasNext = false;
+        boolean hasNext = false;
+        for (int index = this.index; index < this.numbers.length; ++index) {
+            if (isPrime(this.numbers[index])) {
+                hasNext = true;
+                this.index = index;
+                break;
+            }
         }
         return hasNext;
     }
@@ -59,7 +59,6 @@ public class PrimeIterator implements Iterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        this.index = getIndex();
         return this.numbers[this.index++];
     }
 }
