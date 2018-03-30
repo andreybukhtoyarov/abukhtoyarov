@@ -27,11 +27,9 @@ public class MatrixIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        boolean hasNext = true;
-        if (this.values.length == 0 || this.deep == this.values.length - 1 && this.index == this.values[this.deep].length) {
-            hasNext = false;
-        }
-        return hasNext;
+        return this.values.length != 0
+                && (this.deep != this.values.length - 1
+                || this.index != this.values[this.deep].length);
     }
 
     /**
