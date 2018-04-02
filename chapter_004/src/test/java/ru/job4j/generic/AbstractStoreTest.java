@@ -1,5 +1,6 @@
 package ru.job4j.generic;
 
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,11 +34,52 @@ public class AbstractStoreTest {
     }
 
     @Test
+    public void whenAddOneHundredElementsThenSizeIsOneZeroTwo() {
+        for (int iterate = 0; iterate < 100; ++iterate) {
+            this.userStore.add(new User(String.format("%s", iterate)));
+            this.roleStore.add(new Role(String.format("%s", iterate)));
+        }
+        assertThat(this.userStore.size(), is(102));
+        assertThat(this.roleStore.size(), is(102));
+    }
+
+    @Test
     public void whenReplaceElementsThenElementsIsReplaced() {
-        boolean result = this.roleStore.replace("002", new Role("new Role"));
-        boolean result2 = this.userStore.replace("200", new User("new User"));
+        boolean result = this.roleStore.replace("001", new Role("new Role"));
+        boolean result2 = this.userStore.replace("100", new User("new User"));
         assertThat(result, is(true));
         assertThat(result2, is(true));
-        //assertThat(this.roleStore.findById("new Role"), is(new Role("new Role")));
+        assertThat(this.roleStore.findById("new Role"), is(new Role("new Role")));
+        assertThat(this.userStore.findById("new User"), is(new User("new User")));
+    }
+
+    @Test
+    public void whenReplaceElementsByNotExistIdThenReturnFalse() {
+        assertThat(this.roleStore.replace("id not exist", new Role("002")), is(false));
+        assertThat(this.userStore.replace("id not exist", new User("200")), is(false));
+    }
+
+    @Test
+    public void whenFindByIdThenFound() {
+        assertThat(this.roleStore.findById("001"), is(new Role("001")));
+        assertThat(this.userStore.findById("100"), is(new User("100")));
+    }
+
+    @Test
+    public void whenFindByIdAndIdNotExistThenReturnNull() {
+        assertThat(this.roleStore.findById("002"), new IsNull<>());
+        assertThat(this.userStore.findById("200"), new IsNull<>());
+    }
+
+    @Test
+    public void whenDeleteThenReturnTrue() {
+        assertThat(this.userStore.delete("100"), is(true));
+        assertThat(this.roleStore.delete("001"), is(true));
+    }
+
+    @Test
+    public void whenDeleteByNotExistIdThenReturnFalse() {
+        assertThat(this.userStore.delete("id not exist"), is(false));
+        assertThat(this.roleStore.delete("id not exist"), is(false));
     }
 }
