@@ -41,4 +41,8 @@ public abstract class AbstractStore<E extends Base> {
         }
         return result;
     }
+
+    public int size() {
+        return this.sArray.size();
+    }
 }
