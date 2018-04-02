@@ -55,10 +55,7 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     public void delete(int index) {
         checkSize(index);
-        Object[] tmp = new Object[this.values.length];
-        System.arraycopy(this.values, 0, tmp, 0, index);
-        System.arraycopy(this.values, index + 1, tmp, index, this.size);
-        this.values = Arrays.copyOf(tmp, tmp.length);
+        System.arraycopy(this.values, index + 1, this.values, index, this.size - 1);
         --this.size;
     }
 
