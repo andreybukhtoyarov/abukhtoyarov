@@ -117,7 +117,7 @@ public class DynamicList<E> implements Iterable<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return (E) data[cursor];
+                return (E) data[cursor++];
             }
         };
     }
