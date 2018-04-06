@@ -1,33 +1,68 @@
 package ru.job4j.list;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class DynamicLinkedList<E> implements SimpleContainer<E> {
-
+    /**
+     * Size of list.
+     */
     private int size = 0;
 
+    /**
+     * Count of modify in data.
+     */
     private int modCount = 0;
 
+    /**
+     * Link on first element in list.
+     */
     private Node<E> first;
 
+    /**
+     * Link on last element in list.
+     */
     private Node<E> last;
 
+    /**
+     * Return new iterator for list.
+     * @return new iterator.
+     */
     @Override
     public Iterator<E> iterator() {
+
         return new Iterator<E>() {
+            int expectedModCount = modCount;
+            int cursor = 0;
+
+            private void checkModification() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+            }
+
             @Override
             public boolean hasNext() {
-                return false;
+                checkModification();
+                return this.cursor < size;
             }
 
             @Override
             public E next() {
-                return null;
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return get(cursor++);
             }
         };
     }
 
+    /**
+     * Added new element in collection.
+     * @param value new element.
+     * @return added element.
+     */
     @Override
     public E add(E value) {
         Node<E> newElement = new Node<>(this.last, value, null);
@@ -43,14 +78,26 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
         return value;
     }
 
+    /**
+     * Get first element from list.
+     * @return first element from list.
+     */
     public E getFirst() {
         return this.first.element;
     }
 
+    /**
+     * Get last element from list.
+     * @return last element from list.
+     */
     public E getLast() {
         return this.last.element;
     }
 
+    /**
+     * Get size of list.
+     * @return size of list.
+     */
     public int size() {
         return this.size;
     }
@@ -65,6 +112,11 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
         }
     }
 
+    /**
+     * Get element from collection.
+     * @param index index of element.
+     * @return element.
+     */
     @Override
     public E get(int index) {
         checkIndex(index);
@@ -85,9 +137,22 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
         return element;
     }
 
+    /**
+     * This class is wrapper on element from collection.
+     * @param <E>
+     */
     private static class Node<E> {
+        /**
+         * Stored element.
+         */
         E element;
+        /**
+         * Link on previous node.
+         */
         Node<E> prev;
+        /**
+         * Link on next node.
+         */
         Node<E> next;
 
         Node(Node<E> prev, E element, Node<E> next) {

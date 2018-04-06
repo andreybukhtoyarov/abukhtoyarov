@@ -3,8 +3,12 @@ package ru.job4j.list;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 
 public class DynamicLinkedListTest {
 
@@ -31,5 +35,32 @@ public class DynamicLinkedListTest {
         assertThat(this.list.get(4), is(4));
         assertThat(this.list.size(), is(6));
 
+    }
+
+    @Test
+    public void whenGetElementsThenReturnElements() {
+        assertThat(this.list.get(1), is(1));
+        assertThat(this.list.get(2), is(2));
+        assertThat(this.list.get(2), is(2));
+        assertThat(this.list.get(2), is(2));
+        assertThat(this.list.get(0), is(0));
+    }
+
+    @Test (expected = NoSuchElementException.class)
+    public void sequentialHasNextInvocationDoesntAffectRetrievalOrder() {
+        Iterator<Integer> it = this.list.iterator();
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(0));
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        it.next();
+    }
+
+    @Test (expected = ConcurrentModificationException.class)
+    public void whenModifyListThenIteratorThrowNewConcurrentModificationException() {
+        Iterator<Integer> it = this.list.iterator();
+        this.list.add(100);
+        it.hasNext();
     }
 }
