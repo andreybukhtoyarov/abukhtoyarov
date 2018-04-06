@@ -4,6 +4,12 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * This class is simple Linked List.
+ * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
+ * @version %Id%.
+ * @since 0.1.
+ */
 public class DynamicLinkedList<E> implements SimpleContainer<E> {
     /**
      * Size of list.
@@ -59,6 +65,28 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
     }
 
     /**
+     * Return node by index.
+     * @param index index of node.
+     * @return node.
+     */
+    private Node<E> getNode(int index) {
+        checkIndex(index);
+        Node<E> node;
+        if (index == this.size / 2) {
+            node = this.first;
+            for (int position = 0; position < index; ++position) {
+                node = node.next;
+            }
+        } else {
+            node = this.last;
+            for (int position = this.size - 1; position > index; --position) {
+                node = node.prev;
+            }
+        }
+        return node;
+    }
+
+    /**
      * Added new element in collection.
      * @param value new element.
      * @return added element.
@@ -79,10 +107,81 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
     }
 
     /**
+     * Delete element from collection.
+     * @param index index of element.
+     */
+    public void delete(int index) {
+        Node<E> deleteNode = getNode(index);
+        if (this.first == this.last) {
+            this.first = null;
+            this.last = null;
+            this.modCount++;
+            this.size--;
+        }
+        if (deleteNode.prev != null) {
+            deleteNode.prev.next = deleteNode.next;
+            if (deleteNode.next == null) {
+                this.last = deleteNode.prev;
+            }
+            this.modCount++;
+            this.size--;
+        }
+        if (deleteNode.next != null) {
+            deleteNode.next.prev = deleteNode.prev;
+            if (deleteNode.prev == null) {
+                this.first = deleteNode.next;
+            }
+            this.modCount++;
+            this.size--;
+        }
+    }
+
+    /**
+     * Remove first element from collection.
+     */
+    public void removeFirst() {
+        if (this.first == null) {
+            throw new NoSuchElementException();
+        }
+        if (this.first.next == null) {
+            this.first = null;
+            this.last = null;
+            this.modCount++;
+            this.size--;
+        } else {
+            this.first = this.first.next;
+            this.modCount++;
+            this.size--;
+        }
+    }
+
+    /**
+     * Remove last element from collection.
+     */
+    public void removeLast() {
+        if (this.last == null) {
+            throw new NoSuchElementException();
+        }
+        if (this.size == 1) {
+            this.first = null;
+            this.last = null;
+            this.modCount++;
+            this.size--;
+        } else {
+            this.last = this.last.prev;
+            this.modCount++;
+            this.size--;
+        }
+    }
+
+    /**
      * Get first element from list.
      * @return first element from list.
      */
     public E getFirst() {
+        if (this.first == null) {
+            throw new NoSuchElementException();
+        }
         return this.first.element;
     }
 
@@ -91,6 +190,9 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
      * @return last element from list.
      */
     public E getLast() {
+        if (this.last == null) {
+            throw new NoSuchElementException();
+        }
         return this.last.element;
     }
 
@@ -119,22 +221,7 @@ public class DynamicLinkedList<E> implements SimpleContainer<E> {
      */
     @Override
     public E get(int index) {
-        checkIndex(index);
-        E element;
-        if (index == this.size / 2) {
-            Node<E> node = this.first;
-            for (int position = 0; position < index; ++position) {
-                node = node.next;
-            }
-            element = node.element;
-        } else {
-            Node<E> node = this.last;
-            for (int position = this.size - 1; position > index; --position) {
-                node = node.prev;
-            }
-            element = node.element;
-        }
-        return element;
+        return getNode(index).element;
     }
 
     /**

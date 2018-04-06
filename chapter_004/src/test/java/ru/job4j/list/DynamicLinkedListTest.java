@@ -63,4 +63,64 @@ public class DynamicLinkedListTest {
         this.list.add(100);
         it.hasNext();
     }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenDeleteByIdThenElementDeleted() {
+        this.list.delete(1);
+        assertThat(this.list.get(0), is(0));
+        assertThat(this.list.get(1), is(2));
+        this.list.get(2);
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenDeleteElementFromListWithOneElementThenDelete() {
+        DynamicLinkedList<Integer> list = new DynamicLinkedList<>();
+        list.add(4);
+        list.delete(0);
+        list.get(0);
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenDeleteLastElementThenLastElementDeleted() {
+        this.list.delete(2);
+        assertThat(this.list.get(0), is(0));
+        assertThat(this.list.get(1), is(1));
+        this.list.get(2);
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenDeleteFirstElementThenFirstElementDeleted() {
+        this.list.delete(0);
+        assertThat(this.list.get(0), is(1));
+        assertThat(this.list.get(1), is(2));
+        this.list.get(2);
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenRemoveFirstThenRemovedFirstElement() {
+        this.list.removeFirst();
+        assertThat(this.list.size(), is(2));
+        assertThat(this.list.get(0), is(1));
+        assertThat(this.list.get(1), is(2));
+        this.list.removeFirst();
+        assertThat(this.list.size(), is(1));
+        assertThat(this.list.get(0), is(2));
+        this.list.removeFirst();
+        assertThat(this.list.size(), is(0));
+        this.list.get(0);
+    }
+
+    @Test (expected = IndexOutOfBoundsException.class)
+    public void whenRemoveLastThenRemovedLastElement() {
+        this.list.removeLast();
+        assertThat(this.list.size(), is(2));
+        assertThat(this.list.get(0), is(0));
+        assertThat(this.list.get(1), is(1));
+        this.list.removeLast();
+        assertThat(this.list.size(), is(1));
+        assertThat(this.list.get(0), is(0));
+        this.list.removeLast();
+        assertThat(this.list.size(), is(0));
+        this.list.get(0);
+    }
 }
