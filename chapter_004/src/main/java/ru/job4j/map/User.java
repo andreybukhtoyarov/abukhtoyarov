@@ -36,6 +36,11 @@ public class User {
     }
 
     @Override
+    public int hashCode() {
+        return 31 * (name.hashCode() + children + birthday.hashCode());
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
