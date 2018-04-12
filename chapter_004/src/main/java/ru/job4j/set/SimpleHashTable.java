@@ -82,7 +82,7 @@ public class SimpleHashTable<E> {
         boolean added = false;
         if (e != null) {
             int index = hashIndex(e);
-            if (index >= threshold) {
+            if (size == threshold) {
                 if (reHash()) {
                     int newIndex = hashIndex(e);
                     hashTable[newIndex] = e;
