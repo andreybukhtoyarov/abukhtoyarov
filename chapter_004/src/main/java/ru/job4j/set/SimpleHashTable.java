@@ -108,7 +108,7 @@ public class SimpleHashTable<E> {
         boolean removed = false;
         if (e != null) {
             int index = hashIndex(e);
-            if (index < hashTable.length && hashTable[index] != null) {
+            if (hashTable[index] != null) {
                 hashTable[index] = null;
                 removed = true;
                 size--;
@@ -126,7 +126,7 @@ public class SimpleHashTable<E> {
         boolean contains = false;
         if (e != null) {
             int index = hashIndex(e);
-            if (index < hashTable.length && hashTable[index] != null && hashTable[index].equals(e)) {
+            if (hashTable[index] != null && hashTable[index].equals(e)) {
                 contains = true;
             }
         }
