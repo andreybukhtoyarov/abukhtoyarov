@@ -22,6 +22,8 @@ public class SimpleHashTable<E> {
      */
     private int stdCapacity = 100;
 
+    private int threshold = 75;
+
     /**
      * Constructor.
      */
@@ -32,18 +34,43 @@ public class SimpleHashTable<E> {
     /**
      * Make index by hash.
      * @param e element.
-     * @return unique.
+     * @return unique index.
      */
     private int hashIndex(E e) {
-        return e.hashCode() % hashTable.length;
+        return Math.abs(e.hashCode() % hashTable.length);
+    }
+
+    /**
+     * Increases the capacity of and internally reorganizes this hashTable.
+     * @return true if hashTable is rehashed.
+     */
+    private boolean reHash() {
+        boolean rehash = false;
+        Object[] oldHashTable = this.hashTable;
+        int newCapacity = increaseCapacity();
+        if (newCapacity != this.hashTable.length) {
+            this.hashTable = new Object[newCapacity];
+            this.threshold = (int) (this.hashTable.length * 0.75f);
+            for (Object element : oldHashTable) {
+                if (element != null) {
+                    this.hashTable[hashIndex((E) element)] = element;
+                }
+            }
+            rehash = true;
+        }
+        return rehash;
     }
 
     /**
      * Increase capacity of hashTable.
      * @return new capacity of hashTable.
      */
-    private int increased() {
-        return hashTable.length + (int) (hashTable.length * 0.75d);
+    private int increaseCapacity() {
+        int newCapacity = this.hashTable.length << 1;
+        if (newCapacity > Integer.MAX_VALUE - 8) {
+            newCapacity = Integer.MAX_VALUE - 8;
+        }
+        return newCapacity;
     }
 
     /**
@@ -55,12 +82,19 @@ public class SimpleHashTable<E> {
         boolean added = false;
         if (e != null) {
             int index = hashIndex(e);
-            while (hashTable.length <= index) {
-                hashTable = Arrays.copyOf(hashTable, increased());
+            if (index >= threshold) {
+                if (reHash()) {
+                    int newIndex = hashIndex(e);
+                    hashTable[newIndex] = e;
+                    added = true;
+                    size++;
+                }
+            } else {
+                hashTable[index] = e;
+                added = true;
+                size++;
             }
-            hashTable[index] = e;
-            added = true;
-            size++;
+
         }
         return added;
     }

@@ -26,6 +26,13 @@ public class SetOnHashTableTest {
     }
 
     @Test
+    public void whenAddNewElementThenSizeIzFiveAndThisElement() {
+        hashTable.add(530547899);
+        assertThat(hashTable.size(), is(5));
+        assertThat(hashTable.contains(530547899), is(true));
+    }
+
+    @Test
     public void whenAddNotUniqueElementThenNotAdded() {
         hashTable.add(4213);
         assertThat(hashTable.size(), is(4));
