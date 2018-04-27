@@ -1,6 +1,8 @@
 package ru.job4j.set;
 
-import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * This class is simple Hash table.
@@ -8,7 +10,7 @@ import java.util.Arrays;
  * @version %Id%.
  * @since 0.1.
  */
-public class SimpleHashTable<E> {
+public class SimpleHashTable<E> implements Iterable<E> {
     /**
      * Array with data.
      */
@@ -21,8 +23,14 @@ public class SimpleHashTable<E> {
      * Standard capacity.
      */
     private int stdCapacity = 100;
-
+    /**
+     * Threshold.
+     */
     private int threshold = 75;
+    /**
+     * Count of modifications.
+     */
+    private int modCount = 0;
 
     /**
      * Constructor.
@@ -88,11 +96,13 @@ public class SimpleHashTable<E> {
                     hashTable[newIndex] = e;
                     added = true;
                     size++;
+                    modCount++;
                 }
             } else {
                 hashTable[index] = e;
                 added = true;
                 size++;
+                modCount++;
             }
 
         }
@@ -112,6 +122,7 @@ public class SimpleHashTable<E> {
                 hashTable[index] = null;
                 removed = true;
                 size--;
+                modCount++;
             }
         }
         return removed;
@@ -134,10 +145,67 @@ public class SimpleHashTable<E> {
     }
 
     /**
+     * Return element from hashTable.
+     * @param e element
+     * @return element or null if element not contains in hashTable.
+     */
+    public E get(E e) {
+        E result = null;
+        if (e != null) {
+            int index = hashIndex(e);
+            if (hashTable[index] != null && hashTable[index].equals(e)) {
+                result = (E) hashTable[index];
+            }
+        }
+        return result;
+    }
+
+    /**
      * Return count of element in hashTable.
      * @return count of element in hashTable.
      */
     public int size() {
         return size;
+    }
+
+    /**
+     * Return iterator.
+     * @return iterator.
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+
+            int expectedModCount = modCount;
+
+            int cursor = 0;
+
+            int iteration = 0;
+
+            @Override
+            public boolean hasNext() {
+                if (modCount != expectedModCount) {
+                    throw new ConcurrentModificationException();
+                }
+                return iteration < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E next = null;
+                for (int index = cursor; index < hashTable.length; ++index) {
+                    if (hashTable[index] != null) {
+                        next = (E) hashTable[index];
+                        cursor = ++index;
+                        iteration++;
+                        break;
+                    }
+                }
+                return next;
+            }
+        };
     }
 }
