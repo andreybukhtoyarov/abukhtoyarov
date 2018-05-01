@@ -73,4 +73,16 @@ public class TheSimpleTreeTest {
         this.tree.add(5, 5);
         it.next();
     }
+
+    @Test
+    public void whenUseIsBinaryThenReturnTrue() {
+        assertThat(this.tree.isBinary(), is(true));
+    }
+
+    @Test
+    public void whenAddThirdChildAndUseIsBinaryThenReturnFalse() {
+        this.tree.add(3, 5);
+        this.tree.add(3, 6);
+        assertThat(this.tree.isBinary(), is(false));
+    }
 }
