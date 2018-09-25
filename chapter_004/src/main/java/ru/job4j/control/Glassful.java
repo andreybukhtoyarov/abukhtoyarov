@@ -2,24 +2,46 @@ package ru.job4j.control;
 
 import java.util.*;
 
+/**
+ * Класс описывает стакан со ставками.
+ * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
+ * @version %Id%.
+ * @since 0.1.
+ */
 public class Glassful {
-
+    /**
+     * УНикальный номер стакана.
+     */
     private final int book;
-
+    /**
+     * Сортировка по уменьшению цены.
+     */
     private Comparator<Bid> reducePrices = new Comparator<Bid>() {
         @Override
         public int compare(Bid o1, Bid o2) {
-            return Integer.compare(o2.getPrice(), o1.getPrice());
+            return o2.getPrice() == o1.getPrice() ?
+                    Integer.compare(o2.getId(), o1.getId()) : Integer.compare(o2.getPrice(), o1.getPrice());
         }
     };
-
-    private final TreeSet<Bid> bidSet = new TreeSet<>(reducePrices); //покупаем - 1
-    private final TreeSet<Bid> askSet = new TreeSet<>(reducePrices); //продаем - 0
+    /**
+     * Множество ставок данного стакана на покупку.
+     * Действие на покупку в системе - 1.
+     */
+    private final TreeSet<Bid> bidSet = new TreeSet<>(reducePrices);
+    /**
+     * Множество ставок данного стакана на продажу.
+     * Действие на продажу в системе - 0.
+     */
+    private final TreeSet<Bid> askSet = new TreeSet<>(reducePrices);
 
     public Glassful(int book) {
         this.book = book;
     }
 
+    /**
+     * Возвращает номер стакана.
+     * @return номер стакана.
+     */
     public int getBook() {
         return book;
     }
@@ -40,6 +62,10 @@ public class Glassful {
         return b;
     }
 
+    /**
+     * Метод добавляет ставку в стакан.
+     * @param bid новая ставка.
+     */
     public void addBid(Bid bid) {
         if (bid != null) {
             boolean b = true;
@@ -65,56 +91,77 @@ public class Glassful {
         }
     }
 
+    /**
+     * Метод удаляет ставку из стакана.
+     * @param bid ставка для удаления.
+     * @return true если ставка удалена.
+     */
     public boolean delBid(Bid bid) {
         boolean deleted = false;
         if (bid != null) {
-            int volume = bid.getVolume();
-            if (volume > 0) {
+            if (bid.getVolume() > 0) {
                 if (bid.getAction() == 1 && !bidSet.isEmpty()) {
-                    deleted = delBidInSet(bidSet, bid, volume);
+                    deleted = delBidInSet(bidSet, bid);
                 } else if (bid.getAction() == 0 && !bidSet.isEmpty()) {
-                    deleted = delBidInSet(askSet, bid, volume);
+                    deleted = delBidInSet(askSet, bid);
                 }
             }
         }
         return deleted;
     }
 
-    private boolean delBidInSet(TreeSet<Bid> set, Bid bid, int volume) {
+    /**
+     * Удаляет ставку непосредственно из множества ставок.
+     * @param set нужное множество стаквок.
+     * @param bid заявка на удаление.
+     * @return true если ставка удалена.
+     */
+    private boolean delBidInSet(TreeSet<Bid> set, Bid bid) {
         boolean deleted = false;
-        for (Bid b : set) {
-            if (b.getPrice() == bid.getPrice()) {
-                int bVolume = b.getVolume();
-                if (b.setVolume(bVolume - volume) <= 0) {
-                    bid.setVolume(volume - bVolume);
-                    set.remove(b);
-                } else {
+        Iterator<Bid> iter = set.iterator();
+        while (iter.hasNext()) {
+            Bid now = iter.next();
+            if (now.getPrice() == bid.getPrice()) {
+                int nowVolume = now.getVolume();
+                if (now.setVolume(nowVolume - bid.getVolume()) <= 0) {
+                    bid.setVolume(bid.getVolume() - nowVolume);
+                    iter.remove();
                     deleted = true;
-                    break;
-                }
-                if (bid.getVolume() > 0) {
-                    delBid(bid); // ПРОВЕРИТЬ ЭТО МЕСТО!!!!!!
-                } else {
-                    deleted = true;
-                    break;
                 }
             }
         }
         return deleted;
     }
 
-    public boolean containsBid(Bid bid) {
+    /**
+     * Выясняет содержится ли ставка во множестве ставок.
+     * @param id id ставки.
+     * @return true если ставка сожержится во множестве.
+     */
+    public boolean containsBid(int id) {
         boolean contains = false;
-        if (bid != null) {
-            if (bid.getAction() == 1) {
-                contains = this.bidSet.contains(bid);
-            } else if (bid.getAction() == 0) {
-                contains = this.askSet.contains(bid);
+        for (Bid bid : askSet) {
+            if (bid.getId() == id) {
+                contains = true;
+                break;
+            }
+        }
+        if (!contains) {
+            for (Bid bid : bidSet) {
+                if (bid.getId() == id) {
+                    contains = true;
+                    break;
+                }
             }
         }
         return contains;
     }
 
+    /**
+     * Возвращает Optional<Bid>, первую по номеру, по действию.
+     * @param action действие заявки.
+     * @return Optional<Bid>.
+     */
     public Optional<Bid> getFirst(int action) {
         Optional<Bid> optBid = Optional.empty();
         if (action == 0) {
@@ -125,6 +172,12 @@ public class Glassful {
         return optBid;
     }
 
+    /**
+     * Возвращает Optional<Bid> по id и множеству.
+     * @param id id заявки.
+     * @param set множество заявок.
+     * @return Optional<Bid>.
+     */
     private Optional<Bid> getBid(int id, TreeSet<Bid> set) {
         Optional<Bid> optBid = Optional.empty();
         if (set != null) {
@@ -148,36 +201,18 @@ public class Glassful {
         return optBid;
     }
 
-    private class Iter extends GlassfulIterator {
-
-        public Iter(Set<Bid> set) {
-            super(set);
-        }
-    }
-
-    public class AskSetIterator implements Iterable<Bid> {
-
-        @Override
-        public Iterator<Bid> iterator() {
-            return new Iter(askSet);
-        }
-    }
-
-    public class BidSetIterator implements Iterable<Bid> {
-
-        @Override
-        public Iterator<Bid> iterator() {
-            return new Iter(bidSet);
-        }
-    }
-
-    private Map<Integer, Integer> summator(int action) {
+    /**
+     * Возвращает словарь ставок по действию вида: цена - количество.
+     * @param action действие ставки.
+     * @return словарь ставок по действию вида: цена - количество.
+     */
+    Map<Integer, Integer> summator(int action) {
         Iterator<Bid> iter;
         Map<Integer, Integer> map = new HashMap<>();
         if (action == 0) {
-            iter = new AskSetIterator().iterator();
+            iter = askSet.iterator();
         } else {
-            iter = new BidSetIterator().iterator();
+            iter = bidSet.iterator();
         }
         while (iter.hasNext()) {
             if (map.isEmpty()) {
