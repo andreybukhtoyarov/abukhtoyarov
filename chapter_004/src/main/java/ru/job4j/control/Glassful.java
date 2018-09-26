@@ -19,8 +19,8 @@ public class Glassful {
     private Comparator<Bid> reducePrices = new Comparator<Bid>() {
         @Override
         public int compare(Bid o1, Bid o2) {
-            return o2.getPrice() == o1.getPrice() ?
-                    Integer.compare(o2.getId(), o1.getId()) : Integer.compare(o2.getPrice(), o1.getPrice());
+            return o2.getPrice() == o1.getPrice()
+                    ? Integer.compare(o2.getId(), o1.getId()) : Integer.compare(o2.getPrice(), o1.getPrice());
         }
     };
     /**
@@ -69,7 +69,7 @@ public class Glassful {
     public void addBid(Bid bid) {
         if (bid != null) {
             boolean b = true;
-            if (bid.getAction() == 1 ) {
+            if (bid.getAction() == 1) {
                 if (!askSet.isEmpty() && bid.getPrice() >= askSet.first().getPrice()) {
                     do {
                         b = execute(bid, askSet);
