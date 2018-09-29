@@ -21,9 +21,9 @@ public class FunctionRange {
      * @param func functional interface.
      * @return List of range.
      */
-    private List<Double> diapason(int start, int end, Function<Double, Double> func){
+    private List<Double> diapason(int start, int end, Function<Double, Double> func) {
         List<Double> result = new ArrayList<>();
-        for (int iter = start ; iter <= end; ++iter) {
+        for (int iter = start; iter <= end; ++iter) {
             result.add(func.apply((double) iter));
         }
         return result;

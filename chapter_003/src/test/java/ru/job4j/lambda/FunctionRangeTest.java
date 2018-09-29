@@ -37,7 +37,7 @@ public class FunctionRangeTest {
         final PrintStream stdOut = System.out;
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
-        fr.funcRange(0,0, 1d);
+        fr.funcRange(0, 0, 1d);
         System.setOut(stdOut);
         assertThat(out.toString(), is("y = loga х (где а > 0, а ≠ 1, x > 0)\n"));
     }
