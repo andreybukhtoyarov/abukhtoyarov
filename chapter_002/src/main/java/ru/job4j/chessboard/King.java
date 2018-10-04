@@ -17,12 +17,11 @@ public class King extends Figure {
 	@Override
 	Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
 		Cell[] way = null;
-
 		if (this.behaviorFigure.canMove(source, dest)) {
 			way = new Cell[]{
 					new Cell(
-							source.getX() + compare(dest.getX(), source.getX()),
-							source.getY() + compare(dest.getY(), source.getY())
+							source.getX() + p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1)),
+							source.getY() + p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1))
 					)
 			};
 		}

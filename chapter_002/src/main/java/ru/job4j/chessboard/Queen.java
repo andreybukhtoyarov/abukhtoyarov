@@ -17,8 +17,8 @@ public class Queen extends Figure {
 	@Override
     Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
         Cell[] way = null;
-		
-		if (this.behaviorFigure.canMove(source, dest) && (source.getX() - dest.getX()) == 0 || (source.getY() - dest.getY()) == 0) {
+		if (this.behaviorFigure.canMove(source, dest) && p.getPositionX(source, dest, (x1, x2) -> x1 - x2) == 0
+				|| p.getPositionY(source, dest, (y1, y2) -> y1 - y2) == 0) {
 			way = rook.way(source, dest);
 		} else if (this.behaviorFigure.canMove(source, dest)) {
 			way = bishop.way(source, dest);

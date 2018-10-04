@@ -18,26 +18,25 @@ public class Rook extends Figure {
 	@Override
     Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
         Cell[] way = null;
-		
 		if (this.behaviorFigure.canMove(source, dest)) {
-			if (source.getX() - dest.getX() != 0) {
-				way = new Cell[abs(source.getX() - dest.getX())];
+			if (p.getPositionX(source, dest, (x1, x2) -> x1 - x2) != 0) {
+				way = new Cell[p.getPositionX(source, dest, (x1, x2) -> abs(x1 - x2))];
 				for (int step = 0; step < way.length; ++step) {
 					way[step] = new Cell(
 							source.getX()
-									+ step * compare(dest.getX(), source.getX())
-									+ compare(dest.getX(), source.getX()),
+									+ step * p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1))
+									+ p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1)),
 							source.getY()
 					);
 				}
-			} else if (source.getY() - dest.getY() != 0) {
-				way = new Cell[abs(source.getY() - dest.getY())];
+			} else if (p.getPositionY(source, dest, (y1, y2) -> y1 - y2) != 0) {
+				way = new Cell[p.getPositionY(source, dest, (y1, y2) -> abs(y1 - y2))];
 				for (int step = 0; step < way.length; ++step) {
 					way[step] = new Cell(
 							source.getX(),
 							source.getY()
-									+ step * compare(dest.getY(), source.getY())
-									+ compare(dest.getY(), source.getY())
+									+ step * p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1))
+									+ p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1))
 					);
 				}
 			}

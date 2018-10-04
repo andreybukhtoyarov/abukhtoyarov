@@ -17,14 +17,14 @@ public class Bishop extends Figure {
     @Override
     Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
         Cell[] way = null;
-
+        int x = p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1));
+        int y = p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1));
         if (this.behaviorFigure.canMove(source, dest)) {
-            way = new Cell[Math.abs(source.getX() - dest.getX())];
-
+            way = new Cell[Math.abs(p.getPositionX(source, dest, (x1, x2) -> x1 - x2))];
             for (int step = 0; step < way.length; ++step) {
                 way[step] = new Cell(
-                        source.getX() + step * compare(dest.getX(), source.getX()) + compare(dest.getX(), source.getX()),
-                        source.getY() + step * compare(dest.getY(), source.getY()) + compare(dest.getY(), source.getY())
+                        source.getX() + step * x + x,
+                        source.getY() + step * y + y
                 );
             }
         }

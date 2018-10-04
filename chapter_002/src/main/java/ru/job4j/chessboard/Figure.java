@@ -11,6 +11,8 @@ public abstract class Figure {
     final BehaviorFigure behaviorFigure;
     /**Field with coordinate of chess figure*/
     final Cell position;
+    /**Field with p*/
+    final Position p = new Position();
 
     Figure(BehaviorFigure behaviorFigure, Cell position) {
         this.behaviorFigure = behaviorFigure;

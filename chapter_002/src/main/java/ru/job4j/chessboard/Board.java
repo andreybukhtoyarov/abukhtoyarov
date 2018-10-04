@@ -1,5 +1,7 @@
 package ru.job4j.chessboard;
 
+import java.util.function.Function;
+
 /**
  * This class describe chess board.
  * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
@@ -20,6 +22,10 @@ public class Board {
         return figure;
     }
 
+    private Figure getFigure(Cell cell, Function<Figure, Figure> funk) {
+        return funk.apply(this.figures[cell.getX()][cell.getY()]);
+    }
+
     /**
      * Moves chess figures.
      * @param source start coordinate.
@@ -30,14 +36,14 @@ public class Board {
      * @throws FigureNotFoundException
      */
     boolean move(Cell source, Cell dest) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
-        Figure figure = this.figures[source.getX()][source.getY()];
+        Figure figure = getFigure(source, (x) -> x);
         if (figure == null) {
             throw new FigureNotFoundException("Тут нет фигуры!");
         }
         if (figure.behaviorFigure.canMove(source, dest)) {
             Cell[] way = figure.way(source, dest);
-            for (int step = 0; step < way.length; ++step) {
-                if (this.figures[way[step].getX()][way[step].getY()] != null) {
+            for (Cell aWay : way) {
+                if (getFigure(aWay, (x) -> x) != null) {
                     throw new OccupiedWayException("На пути стоит фигура, нужно выбрать другой путь!");
                 }
             }

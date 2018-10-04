@@ -6,14 +6,16 @@ package ru.job4j.chessboard;
  * @version %Id%.
  * @since 0.1.
  */
-public class RookBehavior implements BehaviorFigure {
+public class RookBehavior extends Position implements BehaviorFigure {
 
 	@Override
     public boolean canMove(Cell source, Cell dest) throws ImpossibleMoveException {
 		boolean canMove = false;
-		if (source.getY() - dest.getY() != 0 && source.getX() == dest.getX()
+		int x = getPositionX(source, dest, (x1, x2) -> x1 - x2);
+		int y = getPositionY(source, dest, (y1, y2) -> y1 - y2);
+		if (y != 0 && source.getX() == dest.getX()
 			||
-				source.getX() - dest.getX() != 0 && source.getY() == dest.getY()
+				x != 0 && source.getY() == dest.getY()
 			) {
 				canMove = true;
 			} else {

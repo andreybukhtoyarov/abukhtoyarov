@@ -6,15 +6,14 @@ package ru.job4j.chessboard;
  * @version %Id%.
  * @since 0.1.
  */
-public class PawnBehavior implements BehaviorFigure {
+public class PawnBehavior extends Position implements BehaviorFigure {
+
 	@Override
 	public boolean canMove(Cell source, Cell dest) throws ImpossibleMoveException {
 		boolean canMove = false;
-
-		if (source.getY() - dest.getY() != 0
-				&& source.getX() == dest.getX()
-				&& Math.abs(source.getY() - dest.getY()) == 1
-				) {
+		int x = getPositionX(source, dest, (x1, x2) -> x1 - x2);
+		int y = getPositionY(source, dest, (y1, y2) -> y1 - y2);
+		if (y != 0 && source.getX() == dest.getX() && Math.abs(y) == 1) {
 			canMove = true;
 		} else {
 			throw new ImpossibleMoveException("Пешка ходит только вперед!");

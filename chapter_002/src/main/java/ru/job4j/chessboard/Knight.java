@@ -18,19 +18,17 @@ public class Knight extends Figure {
 	@Override
     Cell[] way(Cell source, Cell dest) throws ImpossibleMoveException {
         Cell[] way = null;
-		
 		if (this.behaviorFigure.canMove(source, dest)) {
 			way = new Cell[1];
-
-			if (abs(source.getX() - dest.getX()) == 2) {
+			if (abs(p.getPositionX(source, dest, (x1, x2) -> x1 - x2)) == 2) {
 				way[0] = new Cell(
-						source.getX() + 2 * compare(dest.getX(), source.getX()),
-						source.getY() + compare(dest.getY(), source.getY())
+						source.getX() + 2 * p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1)),
+						source.getY() + p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1))
 						);
 			} else if (abs(source.getY() - dest.getY()) == 2) {
 				way[0] = new Cell(
-						source.getX() + compare(dest.getX(), source.getX()),
-						source.getY() + 2 * compare(dest.getY(), source.getY())
+						source.getX() + p.getPositionX(source, dest, (x1, x2) -> compare(x2, x1)),
+						source.getY() + 2 * p.getPositionY(source, dest, (y1, y2) -> compare(y2, y1))
 				);
 			}
 		}

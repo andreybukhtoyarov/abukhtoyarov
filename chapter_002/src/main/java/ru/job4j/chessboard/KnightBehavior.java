@@ -8,13 +8,16 @@ import static java.lang.Math.abs;
  * @version %Id%.
  * @since 0.1.
  */
-public class KnightBehavior implements BehaviorFigure {
+public class KnightBehavior extends Position implements BehaviorFigure {
+
 	@Override
     public boolean canMove(Cell source, Cell dest) throws ImpossibleMoveException {
 		boolean canMove = false;
-		if (abs(source.getX() - dest.getX()) == 2 && abs(source.getY() - dest.getY()) == 1
+		int x = getPositionX(source, dest, (x1, x2) -> x1 - x2);
+		int y = getPositionY(source, dest, (y1, y2) -> y1 - y2);
+		if (abs(x) == 2 && abs(y) == 1
 			||
-				abs(source.getY() - dest.getY()) == 2 && abs(source.getX() - dest.getX()) == 1
+				abs(y) == 2 && abs(x) == 1
 			) {
 				canMove = true;
 			} else {
