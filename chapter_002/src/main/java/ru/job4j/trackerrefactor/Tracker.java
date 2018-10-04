@@ -3,6 +3,7 @@ package ru.job4j.trackerrefactor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * This class wrapper over an array.
@@ -40,13 +41,23 @@ public class Tracker {
      */
     public void replace(String id, Item item) {
         if (this.items != null) {
-            for (Item value : this.items) {
-                if (id.equals(value.getId())) {
-                    item.setId(this.generateId() + item.getCreate());
-                    this.items.set(this.items.indexOf(value), item);
-                    break;
-                }
-            }
+            find(this.items,
+                    (x) -> {
+                        boolean found = false;
+                        if (id.equals(x.getId())) {
+                            item.setId(this.generateId() + item.getCreate());
+                            this.items.set(this.items.indexOf(x), item);
+                            found = true;
+                        }
+                        return found;
+                    }
+            );
+        }
+    }
+
+    private void find(final List<Item> items, final Predicate<Item> pred) {
+        for (Item it : items) {
+            pred.test(it);
         }
     }
 
@@ -56,11 +67,16 @@ public class Tracker {
      */
     public void delete(String id) {
         if (!this.items.isEmpty()) {
-            for (Item value : this.items) {
-                if (id.equals(value.getId())) {
-                    this.items.remove(this.items.indexOf(value));
-                }
-            }
+            find(this.items,
+                    (x) -> {
+                        boolean found = false;
+                        if (id.equals(x.getId())) {
+                            this.items.remove(this.items.indexOf(x));
+                            found = true;
+                        }
+                        return found;
+                    }
+            );
         }
     }
 
@@ -82,11 +98,16 @@ public class Tracker {
         List<Item> result = null;
         if (!this.items.isEmpty()) {
             ArrayList<Item> tmp = new ArrayList<>();
-            for (Item item : this.items) {
-                if (key.equals(item.getName())) {
-                    tmp.add(item);
-                }
-            }
+            find(this.items,
+                    (x) -> {
+                        boolean found = false;
+                        if (key.equals(x.getName())) {
+                            tmp.add(x);
+                            found = true;
+                        }
+                        return found;
+                    }
+            );
             if (!tmp.isEmpty()) {
                 result = new ArrayList<>(tmp);
             }
@@ -100,15 +121,19 @@ public class Tracker {
      * @return Item.
      */
     public Item findById(String id) {
-        Item result = null;
+        final Item[] result = new Item[1];
         if (!this.items.isEmpty()) {
-            for (Item item : this.items) {
-                if (item.getId().equals(id)) {
-                    result = item;
-                    break;
-                }
-            }
+            find(this.items,
+                    (x) -> {
+                        boolean found = false;
+                        if (x.getId().equals(id)) {
+                            result[0] = x;
+                            found = true;
+                        }
+                        return found;
+                    }
+            );
         }
-        return result;
+        return result[0];
     }
 }
