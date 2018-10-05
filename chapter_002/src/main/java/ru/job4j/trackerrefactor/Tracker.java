@@ -41,23 +41,31 @@ public class Tracker {
      */
     public void replace(String id, Item item) {
         if (this.items != null) {
-            find(this.items,
+            find(this.items, id,
                     (x) -> {
-                        boolean found = false;
-                        if (id.equals(x.getId())) {
-                            item.setId(this.generateId() + item.getCreate());
-                            this.items.set(this.items.indexOf(x), item);
-                            found = true;
-                        }
-                        return found;
+                        item.setId(this.generateId() + item.getCreate());
+                        this.items.set(this.items.indexOf(x), item);
+                        return true;
                     }
             );
         }
     }
 
-    private void find(final List<Item> items, final Predicate<Item> pred) {
+    private void find(final List<Item> items, final String id, final Predicate<Item> pred) {
         for (Item it : items) {
-            pred.test(it);
+            if (id.equals(it.getId())) {
+                pred.test(it);
+                break;
+            }
+        }
+    }
+
+    private void find(final String name, final List<Item> items, final Predicate<Item> pred) {
+        for (Item it : items) {
+            if (name.equals(it.getName())) {
+                pred.test(it);
+                break;
+            }
         }
     }
 
@@ -67,14 +75,10 @@ public class Tracker {
      */
     public void delete(String id) {
         if (!this.items.isEmpty()) {
-            find(this.items,
+            find(this.items, id,
                     (x) -> {
-                        boolean found = false;
-                        if (id.equals(x.getId())) {
-                            this.items.remove(this.items.indexOf(x));
-                            found = true;
-                        }
-                        return found;
+                        this.items.remove(x);
+                        return true;
                     }
             );
         }
@@ -98,14 +102,10 @@ public class Tracker {
         List<Item> result = null;
         if (!this.items.isEmpty()) {
             ArrayList<Item> tmp = new ArrayList<>();
-            find(this.items,
+            find(key, this.items,
                     (x) -> {
-                        boolean found = false;
-                        if (key.equals(x.getName())) {
-                            tmp.add(x);
-                            found = true;
-                        }
-                        return found;
+                        tmp.add(x);
+                        return true;
                     }
             );
             if (!tmp.isEmpty()) {
@@ -123,14 +123,10 @@ public class Tracker {
     public Item findById(String id) {
         final Item[] result = new Item[1];
         if (!this.items.isEmpty()) {
-            find(this.items,
+            find(this.items, id,
                     (x) -> {
-                        boolean found = false;
-                        if (x.getId().equals(id)) {
-                            result[0] = x;
-                            found = true;
-                        }
-                        return found;
+                        result[0] = x;
+                        return true;
                     }
             );
         }
