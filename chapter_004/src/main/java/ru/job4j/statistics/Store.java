@@ -17,26 +17,14 @@ public class Store {
      */
     Info diff(List<User> previous, List<User> current) {
         Info.Builder builder = new Info.Builder();
-        int changedUsers = 0;
-        int deletedUsers = 0;
-        for (User userPrev : previous) {
-            int idUserPrev = userPrev.id;
-            boolean detected = false;
-            for (User userCurrent : current) {
-                if (userCurrent.id == idUserPrev) {
-                    detected = true;
-                    if (!userCurrent.name.equals(userPrev.name)) {
-                        ++changedUsers;
-                    }
-                    break;
-                }
+        previous.forEach(prev -> {
+            current.stream().filter(cure -> prev.id == cure.id && !prev.name.equals(cure.name))
+                    .forEach(c -> builder.setChangedUsers(builder.getChangedUsers() + 1));
+            if (current.stream().noneMatch(cure -> prev.id == cure.id)) {
+                builder.setDeletedUsers(builder.getDeletedUsers() + 1);
             }
-            if (!detected) {
-                ++deletedUsers;
-            }
-        }
-        int newUsers = current.size() - (previous.size() - deletedUsers);
-        return builder.setChangedUsers(changedUsers).setNewUsers(newUsers).setDeletedUsers(deletedUsers).build();
+        });
+        return builder.setNewUsers(current.size() - (previous.size() - builder.getDeletedUsers())).build();
     }
 
     /**

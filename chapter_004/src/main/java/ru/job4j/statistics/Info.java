@@ -57,6 +57,14 @@ public class Info {
             return this;
         }
 
+        public int getChangedUsers() {
+            return changedUsers;
+        }
+
+        public int getDeletedUsers() {
+            return deletedUsers;
+        }
+
         public Info build() {
             return new Info(this);
         }
