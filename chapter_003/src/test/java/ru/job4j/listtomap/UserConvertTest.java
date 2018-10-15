@@ -33,4 +33,10 @@ public class UserConvertTest {
         UserConvert convert = new UserConvert();
         assertThat(convert.process(this.users), is(expected));
     }
+
+    @Test
+    public void whenListIsNullThenEmptyMap() {
+        UserConvert convert = new UserConvert();
+        assertThat(convert.process(null), is(new HashMap<>()));
+    }
 }

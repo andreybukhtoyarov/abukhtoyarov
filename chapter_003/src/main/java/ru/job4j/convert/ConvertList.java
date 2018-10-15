@@ -15,15 +15,8 @@ public class ConvertList {
      * @return array int[][].
      */
     public List<Integer> toList(int[][] array) {
-        ArrayList<Integer> list = null;
-        if (array != null) {
-            list = new ArrayList<>();
-            for (int[] arrayLine : array) {
-                for (int value : arrayLine) {
-                    list.add(value);
-                }
-            }
-        }
+        ArrayList<Integer> list = new ArrayList<>();
+        Arrays.stream(array).map(Arrays::stream).forEach(x -> x.forEach(list::add));
         return list;
     }
 
@@ -59,16 +52,10 @@ public class ConvertList {
      * @return - List<Integer>.
      */
     public List<Integer> convert(List<int[]> list) {
-        List<Integer> result = null;
+        List<Integer> result = new ArrayList<>();
         if (list != null) {
-            result = new ArrayList<>();
-            Iterator<int[]> iter = list.iterator();
-            while (iter.hasNext()) {
-                for (int value : iter.next()) {
-                    result.add(value);
-                }
-            }
+            list.stream().map(Arrays::stream).forEach(y -> y.forEach(result::add));
         }
-        return result;
+        return result.isEmpty() ? null : result;
     }
 }

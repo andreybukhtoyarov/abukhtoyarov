@@ -1,6 +1,7 @@
 package ru.job4j.bank;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class is wrapper over an Map.
@@ -33,15 +34,11 @@ public class Bank {
      * @param passport - Users passport.
      * @return user.
      */
-    private User findUser(String passport) {
-        User user = null;
-        for (Map.Entry<User, List<Account>> pair : this.users.entrySet()) {
-            if (Objects.equals(passport, pair.getKey().getPassport())) {
-                user = pair.getKey();
-                break;
-            }
-        }
-        return user;
+    private User findUser(final String passport) {
+        List<User> users = this.users.keySet().stream().filter(
+                x -> passport.equals(x.getPassport())
+        ).collect(Collectors.toList());
+        return users.isEmpty() ? null : users.get(0);
     }
 
     /**
@@ -49,12 +46,16 @@ public class Bank {
      * @param passport - Users passport.
      * @param account - new account.
      */
-    public void addAccountToUser(String passport, Account account) {
-        if (findUser(passport) != null) {
-            List<Account> userAccounts = this.users.get(findUser(passport));
-            if (!userAccounts.contains(account)) {
-                userAccounts.add(account);
-            }
+    public void addAccountToUser(final String passport, final Account account) {
+        if (this.users.keySet().stream()
+                .filter(user -> passport.equals(user.getPassport()))
+                .map(this.users::get)
+                .flatMap(coll -> coll.stream())
+                .noneMatch(acc -> account.equals(acc))) {
+            this.users.keySet().stream()
+                    .filter(user -> passport.equals(user.getPassport()))
+                    .map(this.users::get)
+                    .forEach(list -> list.add(account));
         }
     }
 
@@ -63,13 +64,11 @@ public class Bank {
      * @param passport - Users passport.
      * @param account - Users account.
      */
-    public void deleteAccountFromUser(String passport, Account account) {
-        if (findUser(passport) != null) {
-            List<Account> userAccounts = this.users.get(findUser(passport));
-            if (userAccounts.contains(account)) {
-                userAccounts.remove(account);
-            }
-        }
+    public void deleteAccountFromUser(final String passport, final Account account) {
+        this.users.keySet().stream().filter(
+                user -> passport.equals(user.getPassport())
+        ).map(this.users::get).forEachOrdered(list -> list.remove(account));
+
     }
 
     /**
@@ -78,11 +77,10 @@ public class Bank {
      * @return - list of accounts for the user.
      */
     public List<Account> getUserAccounts(String passport) {
-        List<Account> accounts = new ArrayList<>();
-        if (findUser(passport) != null) {
-            accounts = this.users.get(findUser(passport));
-        }
-        return accounts;
+        List<List<Account>> ar = this.users.keySet().stream().filter(
+                key -> key.getPassport().equals(passport)
+        ).map(this.users::get).collect(Collectors.toList());
+        return ar.isEmpty() ? new ArrayList<>() : ar.get(0);
     }
 
     /**
@@ -100,9 +98,9 @@ public class Bank {
         Account srcAccount = getAccountByRequisites(getUserAccounts(srcPassport), srcRequisite);
         Account destAccount = getAccountByRequisites(getUserAccounts(destPassport), destRequisite);
         if (amount > 0 && srcAccount != null && destAccount != null && srcAccount.getValue() >= amount) {
-                srcAccount.setValue(srcAccount.getValue() - amount);
-                destAccount.setValue(destAccount.getValue() + amount);
-                transferred = true;
+            srcAccount.setValue(srcAccount.getValue() - amount);
+            destAccount.setValue(destAccount.getValue() + amount);
+            transferred = true;
         }
         return transferred;
     }
@@ -130,12 +128,9 @@ public class Bank {
      * @return account.
      */
     private Account getAccountByRequisites(List<Account> accounts, String requisites) {
-        Account result = null;
-        for (Account account : accounts) {
-            if (Objects.equals(account.getRequisites(), requisites)) {
-                result = account;
-            }
-        }
-        return result;
+        List<Account> results = accounts.stream()
+                .filter(acc -> requisites.equals(acc.getRequisites()))
+                .collect(Collectors.toList());
+        return results.isEmpty() ? null : results.get(0);
     }
 }
