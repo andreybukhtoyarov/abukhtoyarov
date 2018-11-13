@@ -30,6 +30,14 @@ public class SimpleBlockingQueue<E> {
     }
 
     /**
+     * Return true if data is empty.
+     * @return rue if data is empty.
+     */
+    public boolean isEmpty() {
+        return this.data.isEmpty();
+    }
+
+    /**
      * Put element to top of queue.
      * @param element added element.
      */
