@@ -59,13 +59,9 @@ public class SimpleBlockingQueue<E> {
      * Get and remove element from top of queue.
      * @return top element from queue.
      */
-    public synchronized E poll() {
+    public synchronized E poll() throws InterruptedException {
         while (cantTake) {
-            try {
                 wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         E element = data.poll();
         cantTake = data.isEmpty();

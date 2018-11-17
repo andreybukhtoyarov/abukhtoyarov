@@ -22,7 +22,6 @@ public class SimpleBlockingQueueTestTwo {
             while (!sbq.isEmpty() || !Thread.currentThread().isInterrupted()) {
                 try {
                     buffer.add(sbq.poll());
-                    Thread.sleep(50);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Thread.currentThread().interrupt();

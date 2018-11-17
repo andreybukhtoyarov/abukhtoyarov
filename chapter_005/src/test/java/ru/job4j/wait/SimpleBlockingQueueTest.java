@@ -38,7 +38,12 @@ public class SimpleBlockingQueueTest {
         public void run() {
             synchronized (sbq) {
                 for (int i = 0; i < 5; ++i) {
-                    System.out.printf("Consumer take - %s\n", sbq.poll());
+                    try {
+                        System.out.printf("Consumer take - %s\n", sbq.poll());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
         }
