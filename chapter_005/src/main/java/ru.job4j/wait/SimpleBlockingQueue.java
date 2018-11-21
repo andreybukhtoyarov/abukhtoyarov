@@ -52,7 +52,7 @@ public class SimpleBlockingQueue<E> {
         if (data.offer(element)) {
             cantTake = false;
         }
-        notify();
+        notifyAll();
     }
 
     /**
@@ -65,7 +65,7 @@ public class SimpleBlockingQueue<E> {
         }
         E element = data.poll();
         cantTake = data.isEmpty();
-        notify();
+        notifyAll();
         return element;
     }
 }
