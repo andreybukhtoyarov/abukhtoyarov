@@ -25,11 +25,12 @@ public class Hero implements Runnable {
 
     @Override
     public void run() {
+        int stepX = 1;
+        int stepY = 0;
         while (!Thread.currentThread().isInterrupted()) {
-            int stepX = 1;
-            int stepY = 0;
-            if (board.move(source, new Cell(source.getX() + stepX, source.getY() + stepY))) {
-                source = new Cell(source.getX() + stepX, source.getY() + stepY);
+            Cell dest = new Cell(source.getX() + stepX, source.getY() + stepY);
+            if (board.move(source, dest)) {
+                source = dest;
             } else {
                 stepX = stepX * -1;
             }
