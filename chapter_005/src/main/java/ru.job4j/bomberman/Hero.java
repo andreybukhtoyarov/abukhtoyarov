@@ -21,7 +21,6 @@ public class Hero implements Runnable {
     public Hero(Board board, Cell source) {
         this.board = board;
         this.source = source;
-        this.board.getReentrantLock(source).lock();
     }
 
     @Override
@@ -32,7 +31,9 @@ public class Hero implements Runnable {
             Cell dest = new Cell(source.getX() + stepX, source.getY() + stepY);
             if (board.move(source, dest)) {
                 source = dest;
+                System.out.printf("%s  x - %s, y - %s\n", Thread.currentThread().getName(), source.getX(), source.getY());
             } else {
+                System.out.println(Thread.currentThread().getName() + " bad way");
                 stepX = stepX * -1;
             }
             try {

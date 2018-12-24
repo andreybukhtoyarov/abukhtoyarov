@@ -34,9 +34,11 @@ public class Board {
      */
     public boolean move(Cell source, Cell dist) {
         boolean canMove = false;
-        if (getReentrantLock(dist).tryLock()) {
+        if (within(dist) && getReentrantLock(dist).tryLock()) {
             if (within(dist) && checkWay(source, dist)) {
-                getReentrantLock(source).unlock();
+                if (getReentrantLock(source).isLocked()) {
+                    getReentrantLock(source).unlock();
+                }
                 canMove = true;
             } else {
                 getReentrantLock(dist).unlock();
@@ -50,7 +52,7 @@ public class Board {
      * @param cell Cell.
      * @return ReentrantLock.
      */
-    public ReentrantLock getReentrantLock(Cell cell) {
+    private ReentrantLock getReentrantLock(Cell cell) {
         return board[cell.getX()][cell.getY()];
     }
 
