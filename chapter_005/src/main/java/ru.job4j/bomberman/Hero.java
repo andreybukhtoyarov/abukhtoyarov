@@ -21,6 +21,7 @@ public class Hero implements Runnable {
     public Hero(Board board, Cell source) {
         this.board = board;
         this.source = source;
+        this.board.getReentrantLock(source).lock();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ru.job4j.bomberman;
 
 import ru.job4j.chessboard.Cell;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static java.lang.Math.abs;
 
@@ -18,10 +19,9 @@ public class Board {
 
     public Board(int column, int line) {
         this.board = new ReentrantLock[column][line];
-        ReentrantLock.Builder builder = new ReentrantLock.Builder();
         for (int indexLine = 0; indexLine < line; ++indexLine) {
             for (int indexColumn = 0; indexColumn < column; ++indexColumn) {
-                this.board[indexLine][indexColumn] = builder.build();
+                this.board[indexLine][indexColumn] = new ReentrantLock();
             }
         }
     }
@@ -34,29 +34,15 @@ public class Board {
      */
     public boolean move(Cell source, Cell dist) {
         boolean canMove = false;
-        if (tryLock(dist)) {
+        if (getReentrantLock(dist).tryLock()) {
             if (within(dist) && checkWay(source, dist)) {
+                getReentrantLock(source).unlock();
                 canMove = true;
             } else {
-                getReentrantLock(dist).setLocked(false);
+                getReentrantLock(dist).unlock();
             }
         }
         return canMove;
-    }
-
-    /**
-     * If dist cell is locked return false.
-     * If dist cell is not locked, blocking the cell and returning the truth.
-     * @param dist cell dist.
-     * @return If dist cell is locked return false.
-     */
-    private boolean tryLock(Cell dist) {
-        boolean success = false;
-        if (!getReentrantLock(dist).isLocked()) {
-            getReentrantLock(dist).setLocked(true);
-            success = true;
-        }
-        return success;
     }
 
     /**
@@ -64,7 +50,7 @@ public class Board {
      * @param cell Cell.
      * @return ReentrantLock.
      */
-    private ReentrantLock getReentrantLock(Cell cell) {
+    public ReentrantLock getReentrantLock(Cell cell) {
         return board[cell.getX()][cell.getY()];
     }
 
