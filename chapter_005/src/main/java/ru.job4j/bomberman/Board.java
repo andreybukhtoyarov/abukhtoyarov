@@ -17,10 +17,10 @@ public class Board {
      */
     private final ReentrantLock[][] board;
 
-    public Board(int column, int line) {
-        this.board = new ReentrantLock[column][line];
-        for (int indexLine = 0; indexLine < line; ++indexLine) {
-            for (int indexColumn = 0; indexColumn < column; ++indexColumn) {
+    public Board(int size) {
+        this.board = new ReentrantLock[size][size];
+        for (int indexLine = 0; indexLine < size; ++indexLine) {
+            for (int indexColumn = 0; indexColumn < size; ++indexColumn) {
                 this.board[indexLine][indexColumn] = new ReentrantLock();
             }
         }
@@ -35,7 +35,7 @@ public class Board {
     public boolean move(Cell source, Cell dist) {
         boolean canMove = false;
         if (within(dist) && getReentrantLock(dist).tryLock()) {
-            if (within(dist) && checkWay(source, dist)) {
+            if (checkWay(source, dist)) {
                 if (getReentrantLock(source).isLocked()) {
                     getReentrantLock(source).unlock();
                 }
@@ -52,7 +52,7 @@ public class Board {
      * @param cell Cell.
      * @return ReentrantLock.
      */
-    private ReentrantLock getReentrantLock(Cell cell) {
+    public ReentrantLock getReentrantLock(Cell cell) {
         return board[cell.getX()][cell.getY()];
     }
 
@@ -72,7 +72,7 @@ public class Board {
     }
 
     /**
-     * Checks if the difference between the old and the new coordinate is one
+     * Checks if the difference between the old and the new coordinate is one.
      * @param source Cell source.
      * @param dist Cell destination.
      * @return true if between is one.
