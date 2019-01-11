@@ -37,16 +37,22 @@ public class NonBlockingCacheTest {
     @Test
     public void whenThrowException() {
         AtomicReference<Exception> exs = new AtomicReference<>();
-        IntStream.range(0, 4).forEach(
+        IntStream.range(0, 5).forEach(
                 (x) -> pool.submit(
                         () -> {
                             try {
                                 nbc.update(new Base(1, "Name 1"),
                                         (k, v) -> {
-                                            v.setName("New Name");
+                                            v.setName(String.format("New Name %s", x + 1));
+                                            System.out.println(Thread.currentThread().getName());
+                                            System.out.println(nbc.get(1).getName());
                                             return v;
                                         });
                             } catch (Exception ex) {
+                                System.out.printf(
+                                        "%s Exception in %s", nbc.get(1).getName(),
+                                        Thread.currentThread().getName()
+                                );
                                 exs.set(ex);
                             }
                         }

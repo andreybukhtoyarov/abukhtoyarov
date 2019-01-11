@@ -38,10 +38,10 @@ public class NonBlockingCache {
      */
     public Base update(Base model, BiFunction<Integer, Base, Base> func) {
         return cache.computeIfPresent(model.getId(), (k, v) -> {
-            int version = v.getVersion();
-            check(version, v.getVersion());
-            v.setVersion(v.getVersion() + 1);
+            int currentVersion = v.getVersion();
             func.apply(k, v);
+            check(currentVersion, v.getVersion());
+            v.setVersion(currentVersion + 1);
             return v;
         });
     }
@@ -53,6 +53,15 @@ public class NonBlockingCache {
      */
     public Base delete(Base model) {
         return this.cache.remove(model.getId());
+    }
+
+    /**
+     * Get value by id.
+     * @param id id.
+     * @return value.
+     */
+    public Base get(int id) {
+        return this.cache.get(id);
     }
 
     /**
