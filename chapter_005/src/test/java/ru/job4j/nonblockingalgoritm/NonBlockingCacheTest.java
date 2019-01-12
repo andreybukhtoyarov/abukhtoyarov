@@ -50,7 +50,7 @@ public class NonBlockingCacheTest {
                                         });
                             } catch (Exception ex) {
                                 System.out.printf(
-                                        "%s Exception in %s", nbc.get(1).getName(),
+                                        "%s Exception in %s\n", nbc.get(1).getName(),
                                         Thread.currentThread().getName()
                                 );
                                 exs.set(ex);

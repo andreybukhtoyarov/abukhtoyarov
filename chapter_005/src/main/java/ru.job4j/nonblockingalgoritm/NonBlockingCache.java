@@ -37,8 +37,8 @@ public class NonBlockingCache {
      * @return model.
      */
     public Base update(Base model, BiFunction<Integer, Base, Base> func) {
+        int currentVersion = cache.get(model.getId()).getVersion();
         return cache.computeIfPresent(model.getId(), (k, v) -> {
-            int currentVersion = v.getVersion();
             func.apply(k, v);
             check(currentVersion, v.getVersion());
             v.setVersion(currentVersion + 1);
