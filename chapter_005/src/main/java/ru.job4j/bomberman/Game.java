@@ -134,8 +134,9 @@ public class Game {
         try {
             if (!pool.awaitTermination(3, TimeUnit.SECONDS)) {
                 pool.shutdownNow();
-                if (!pool.awaitTermination(3, TimeUnit.SECONDS))
+                if (!pool.awaitTermination(3, TimeUnit.SECONDS)) {
                     System.err.println("Pool did not terminate");
+                }
             }
         } catch (InterruptedException ie) {
             pool.shutdownNow();

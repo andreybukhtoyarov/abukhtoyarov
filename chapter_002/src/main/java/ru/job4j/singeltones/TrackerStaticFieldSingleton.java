@@ -12,7 +12,7 @@ public class TrackerStaticFieldSingleton {
     /**
      * INSTANCE Tracker.
      */
-    private static Tracker INSTANCE;
+    private static Tracker instance;
 
     private TrackerStaticFieldSingleton() {
 
@@ -23,9 +23,9 @@ public class TrackerStaticFieldSingleton {
      * @return tracker.
      */
     public static Tracker getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Tracker();
+        if (instance == null) {
+            instance = new Tracker();
         }
-        return INSTANCE;
+        return instance;
     }
 }
