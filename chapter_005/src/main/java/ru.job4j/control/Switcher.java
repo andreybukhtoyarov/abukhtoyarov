@@ -23,6 +23,10 @@ public class Switcher {
      * Field with String Holder.
      */
     private final StringHolder sh;
+    /**
+     * Number iteration method execute.
+     */
+    private int counter = 0;
 
     public Switcher(StringHolder sh) {
         this.sh = sh;
@@ -33,19 +37,22 @@ public class Switcher {
      * @param number number.
      */
     protected void execute(int number) {
-        boolean notLock = true;
-        while (notLock) {
+        boolean notGetLock = true;
+        while (notGetLock) {
             if (lock.tryLock()) {
-                System.out.printf("%s - get lock\n", Thread.currentThread().getName());
-                int count = 0;
-                while (count < 10) {
-                    sh.append(number);
-                    ++count;
+                if (this.counter > 0 || this.counter == 0 && number == 1) {
+                    System.out.printf("%s - get lock\n", Thread.currentThread().getName());
+                    int count = 0;
+                    while (count < 10) {
+                        sh.append(number);
+                        ++count;
+                    }
+                    System.out.printf("%s\n", sh.get());
+                    notGetLock = false;
+                    ++this.counter;
+                    condition.signalAll();
+                    System.out.printf("%s - signalAll and unlock\n", Thread.currentThread().getName());
                 }
-                System.out.printf("%s\n", sh.get());
-                notLock = false;
-                condition.signalAll();
-                System.out.printf("%s - signalAll and unlock\n", Thread.currentThread().getName());
                 try {
                     System.out.printf("%s - await\n", Thread.currentThread().getName());
                     condition.await();

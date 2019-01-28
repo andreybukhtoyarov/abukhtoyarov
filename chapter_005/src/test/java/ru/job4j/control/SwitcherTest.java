@@ -21,8 +21,8 @@ public class SwitcherTest {
 
     @Test
     public void when() {
-        pool.submit(new AddOn(sw, 1, 10));
         pool.submit(new AddOn(sw, 2, 10));
+        pool.submit(new AddOn(sw, 1, 10));
         pool.shutdown();
         try {
             pool.awaitTermination(500, TimeUnit.MILLISECONDS);
