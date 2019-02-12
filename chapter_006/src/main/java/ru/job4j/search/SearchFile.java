@@ -27,6 +27,7 @@ public class SearchFile {
      * Find files by file extension.
      * Start thread pool.
      * Add tasks to thread pool.
+     * If exts == null -> add all files.
      * Enjoy to tasks.
      * @param parent parent folder path.
      * @param exts file extensions.
@@ -47,6 +48,7 @@ public class SearchFile {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            threadPool.shutdown();
         }
         return new ArrayList<>(this.files);
     }
@@ -86,10 +88,12 @@ public class SearchFile {
                         Arrays.stream(listFiles).forEach(file -> {
                             if (file.isDirectory()) {
                                 folders.add(file);
-                            } else {
+                            } else if (exts != null) {
                                 exts.stream().filter(name ->
                                         file.getName().endsWith(String.format(".%s", name))).
                                         forEach(name -> files.add(file));
+                            } else {
+                                files.add(file);
                             }
                         });
                     }

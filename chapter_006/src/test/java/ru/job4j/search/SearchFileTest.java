@@ -19,9 +19,13 @@ public class SearchFileTest {
     private final SearchFile search = new SearchFile();
     private final List<String> exts = new ArrayList<>(Arrays.asList("txt", "jpg"));
 
-    private ArrayList<File> folders;
-    private ArrayList<File> files;
+    private List<File> folders;
+    private List<File> files;
     private List<File> expected;
+
+    public List<File> getFiles() {
+        return new ArrayList<>(expected);
+    }
 
     @Before
     public void createFiles() throws IOException {
@@ -73,5 +77,13 @@ public class SearchFileTest {
         Collections.sort(result);
         Collections.sort(expected);
         assertThat(result.equals(expected), is(true));
+    }
+
+    @Test
+    public void whenExtsEqualsNullThen54Files() {
+        List<File> result = search.files(
+                format("%s/rootDir", System.getProperty("java.io.tmpdir")), null
+        );
+        assertThat(result.size() == 54, is(true));
     }
 }
