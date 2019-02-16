@@ -2,7 +2,7 @@ package ru.job4j.dropabuses;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * This class is stub for InputStream.
@@ -11,18 +11,15 @@ import java.util.Arrays;
  * @since 0.1.
  */
 public class StubInput extends InputStream {
-    /**
-     * Array with lines.
-     */
-    private final String[] lines;
+
     /**
      * List with arrays of chars from lines.
      */
-    private final ArrayList<char[]> charsList = new ArrayList<>();
+    private final ArrayList<byte[]> charsList = new ArrayList<>();
     /**
      * Current array of chars for method read().
      */
-    private char[] array;
+    private byte[] array;
     /**
      * Position for get array from List of chars array.
      */
@@ -33,20 +30,19 @@ public class StubInput extends InputStream {
     private int cursor = 0;
 
     public StubInput(String[] lines) {
-        this.lines = lines;
-        Arrays.stream(lines).map(line -> charsList.add(line.toCharArray())).count();
+        Stream.of(lines).forEach(line -> charsList.add(line.getBytes()));
         array = charsList.get(0);
     }
 
     @Override
     public int read() {
-        int character = -1;
+        int bt = -1;
         if (cursor < array.length) {
-            character = array[cursor++];
+            bt = array[cursor++];
         } else if (position < charsList.size() - 1) {
             array = charsList.get(++position);
             cursor = 0;
         }
-        return character;
+        return bt;
     }
 }
