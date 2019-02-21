@@ -76,8 +76,7 @@ public class ConsoleChatTest {
      */
     private List<String> getListOfMatch(String[] lines, String[] expected) {
         return Stream.of(lines)
-                .filter(str -> Stream.of(expected)
-                        .anyMatch(exp -> str.contains(exp.subSequence(0, exp.length() - 2))))
+                .filter(str -> Stream.of(expected).anyMatch(exp -> str.contains(exp.subSequence(0, exp.length() - 2))))
                 .collect(Collectors.toList());
     }
 
@@ -99,6 +98,21 @@ public class ConsoleChatTest {
         }
         List<String> result = getListOfMatch(logLines.toArray(new String[0]), questionsArray);
         assertThat(result.size(), is(6));
+    }
+
+    @Test
+    public void whenAnswersFileNotExistThen() {
+        chat = new ConsoleChat(new File(""), new Log(log), input, out);
+        chat.chat();
+        StringBuilder sb = new StringBuilder().append("Привет\n")
+                .append("Файл с ответами не найден, пуст или не является текстовым файлом.\n")
+                .append("стоп\n")
+                .append("Как дела?\n")
+                .append("продолжить\n")
+                .append("Как погода?\n")
+                .append("Файл с ответами не найден, пуст или не является текстовым файлом.\n")
+                .append("закончить\n");
+        assertThat(this.out.toString(), is(sb.toString()));
     }
 
 }
