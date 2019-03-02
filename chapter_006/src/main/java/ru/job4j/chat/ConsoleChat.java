@@ -39,14 +39,22 @@ public class ConsoleChat {
     /**
      * Console Chat Actions.
      */
-    private final ConsoleChatAction[] actions;
+    private final Map<String, ConsoleChatAction> actions = new HashMap<>();
+    private final ConsoleChatAction answer;
 
     public ConsoleChat(File answers, Log log, InputStream input, OutputStream output) {
         this.answers = answers;
         this.log = log;
         this.input = input;
         this.output = output;
-        this.actions = new ConsoleChatAction[]{new Finish(), new Stop(), new Continue(), new Answer()};
+        this.answer = new Answer();
+        addActions();
+    }
+
+    private void addActions() {
+        actions.put("закончить", new Finish());
+        actions.put("стоп", new Stop());
+        actions.put("продолжить", new Continue());
     }
 
     /**
@@ -55,7 +63,7 @@ public class ConsoleChat {
      */
     private List<String> getAnswers() {
         List<String> answers = new ArrayList<>();
-        if (this.answers.exists() && this.answers.isFile()) {
+        if (this.answers != null && this.answers.exists() && this.answers.isFile()) {
             try (BufferedReader br = new BufferedReader(new FileReader(this.answers))) {
                 answers = br.lines().collect(Collectors.toList());
             } catch (IOException ioe) {
@@ -83,42 +91,15 @@ public class ConsoleChat {
     }
 
     /**
-     * Get random answer from list of answers.
-     * @param answers list of answers.
-     * @return answer.
-     */
-    private String answer(List<String> answers) {
-        String answer = answers.get(new Random().nextInt(answers.size()));
-        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output))) {
-            bw.write(String.format("%s\n", answer));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return answer;
-    }
-
-    /**
      * Main program cycle.
      */
-    public void chat() {
+    public ConsoleChat chat() {
         String ask;
-        while (run) {
+        while (this.run) {
             ask = ask();
-            switch (ask) {
-                case "закончить" :
-                    this.actions[0].execute(this.log, ask);
-                    break;
-                case "стоп" :
-                    this.actions[1].execute(this.log, ask);
-                    break;
-                case "продолжить" :
-                    this.actions[2].execute(this.log, ask);
-                    break;
-                default :
-                    this.actions[3].execute(this.log, ask);
-                    break;
-            }
+            this.actions.getOrDefault(ask, this.answer).execute(this.log, ask);
         }
+        return this;
     }
 
     /**
@@ -178,6 +159,21 @@ public class ConsoleChat {
 
         public Answer() {
             this.answers = getAnswers();
+        }
+
+        /**
+         * Get random answer from list of answers.
+         * @param answers list of answers.
+         * @return answer.
+         */
+        private String answer(List<String> answers) {
+            String answer = answers.get(new Random().nextInt(answers.size()));
+            try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output))) {
+                bw.write(String.format("%s\n", answer));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return answer;
         }
 
         @Override
