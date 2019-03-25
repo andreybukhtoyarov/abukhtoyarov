@@ -183,8 +183,6 @@ public class FileScannerTest {
                 new String[] {
                         "-d", String.format("%s/rootDir", this.tmp),
                         "-n", "*mlFile2.ht*",
-                        "-m",
-                        "-o", String.format("%s/rootDir/log.txt", this.tmp),
                         "-help"
                 },
                 new StringJoiner(System.lineSeparator())

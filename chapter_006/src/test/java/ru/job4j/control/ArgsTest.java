@@ -47,21 +47,4 @@ public class ArgsTest {
         );
     }
 
-    @Test
-    public void whenHelpThen() {
-        assertThat(
-                args.getArg("help"),
-                is("-help")
-        );
-    }
-
-    @Test
-    public void whenArgsIsEmptyThenEmptyString() {
-        this.args = new Args(new String[]{});
-        assertThat(
-                args.getArg("help"),
-                is("")
-        );
-    }
-
 }

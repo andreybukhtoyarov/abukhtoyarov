@@ -2,6 +2,7 @@ package ru.job4j.control;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * ARGS.
@@ -17,7 +18,7 @@ public class Args {
     /**
      * Actions.
      */
-    private Map<String, ArgsAction> actions;
+    private Map<String, Function<Args, String>> actions;
 
     public Args(String[] args) {
         this.args = args;
@@ -29,11 +30,10 @@ public class Args {
      */
     private void fillActions() {
         actions = new HashMap<>();
-        actions.put("getStartDir", new GetStartDirectory());
-        actions.put("getFileName", new GetFileName());
-        actions.put("getBy", new GetBy());
-        actions.put("getLogPath", new GetLogPath());
-        actions.put("help", new Help());
+        actions.put("getStartDir", this::getStartDirectory);
+        actions.put("getFileName", this::getFileName);
+        actions.put("getBy", this::getBy);
+        actions.put("getLogPath", this::getLogPath);
     }
 
     /**
@@ -42,77 +42,83 @@ public class Args {
      * @return arg
      */
     public String getArg(String command) {
-        ArgsAction action = this.actions.get(command);
-        return action != null ? action.execute(this.args) : "";
+        return this.actions.get(command).apply(this);
     }
-}
 
-/**
- * Get start directory arg.
- * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
- * @version %Id%.
- * @since 0.1.
- */
-class GetStartDirectory implements ArgsAction {
-
-    @Override
-    public String execute(String[] args) {
-        return findArg(args, "-d");
+    /**
+     * Return the argument following the specified argument.
+     * @param args arguments.
+     * @param key specified argument.
+     * @return the argument following the specified argument.
+     */
+    private String findArg(String[] args, String key) {
+        String arg = "";
+        String prev = args[0];
+        for (int iteration = 1; iteration < args.length; ++iteration) {
+            if (key.equalsIgnoreCase(prev)) {
+                arg = args[iteration];
+                break;
+            }
+            prev = args[iteration];
+        }
+        return arg;
     }
-}
 
-/**
- * Get file name arg.
- * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
- * @version %Id%.
- * @since 0.1.
- */
-class GetFileName implements ArgsAction {
-
-    @Override
-    public String execute(String[] args) {
-        return findArg(args, "-n");
+    /**
+     * Return the first argument that matched one of the given arguments.
+     * @param args arguments.
+     * @param keys specified arguments.
+     * @return the first argument that matched one of the given arguments.
+     */
+    private String findKey(String[] args, String... keys) {
+        String result = "";
+        for (String arg : args) {
+            for (String key : keys) {
+                if (arg.equalsIgnoreCase(key)) {
+                    result = key;
+                    break;
+                }
+            }
+            if (!"".equalsIgnoreCase(result)) {
+                break;
+            }
+        }
+        return result;
     }
-}
 
-/**
- * Get log path arg.
- * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
- * @version %Id%.
- * @since 0.1.
- */
-class GetLogPath implements ArgsAction {
-
-    @Override
-    public String execute(String[] args) {
-        return findArg(args, "-o");
+    /**
+     * Get start directory path.
+     * @param args this.
+     * @return start directory path.
+     */
+    private String getStartDirectory(Args args) {
+        return findArg(args.args, "-d");
     }
-}
 
-/**
- * Get getBy arg.
- * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
- * @version %Id%.
- * @since 0.1.
- */
-class GetBy implements ArgsAction {
-
-    @Override
-    public String execute(String[] args) {
-        return findKey(args, "-m", "-f");
+    /**
+     * Get file name.
+     * @param args this.
+     * @return file name.
+     */
+    private String getFileName(Args args) {
+        return findArg(args.args, "-n");
     }
-}
 
-/**
- * Get help arg.
- * @author Andrey Bukhtoyarov (andreymedoed@gmail.com).
- * @version %Id%.
- * @since 0.1.
- */
-class Help implements ArgsAction {
+    /**
+     * Get log path.
+     * @param args this.
+     * @return log path.
+     */
+    private String getLogPath(Args args) {
+        return findArg(args.args, "-o");
+    }
 
-    @Override
-    public String execute(String[] args) {
-        return findKey(args, "-help");
+    /**
+     * Get by.
+     * @param args this.
+     * @return get by.
+     */
+    private String getBy(Args args) {
+        return findKey(args.args, "-help", "-m", "-f");
     }
 }

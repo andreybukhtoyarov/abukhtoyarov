@@ -70,13 +70,10 @@ public class FileScanner {
      */
     private void getArgs() {
         final Args arg = new Args(this.args);
-        String help = arg.getArg("help");
-        if ("-help".equals(help)) {
-            this.getBy = help;
-        } else {
+        this.getBy = arg.getArg("getBy");
+        if (!"-help".equals(this.getBy)) {
             this.startDir = Paths.get(arg.getArg("getStartDir"));
             this.fileName = arg.getArg("getFileName");
-            this.getBy = arg.getArg("getBy");
             this.logPath = Paths.get(arg.getArg("getLogPath"));
         }
     }
