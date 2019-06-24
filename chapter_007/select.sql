@@ -25,31 +25,34 @@ type(id, name)
 */
 
 SELECT * FROM product AS p
-INNER JOIN type AS t
-ON t.name = 'СЫР';
+INNER JOIN product_type AS t
+ON t.name = 'сыр' AND t.id = p.type_id;
 
 SELECT * FROM product AS p
-WHERE p.name LIKE '%мороженное%';
+WHERE p.name LIKE '%мороженое%';
 
 SELECT * FROM product AS p
 WHERE (SELECT (EXTRACT(MONTH FROM CURRENT_DATE) + 1) = EXTRACT(MONTH FROM p.expired_date)
 AND EXTRACT(YEAR FROM CURRENT_DATE) = EXTRACT(YEAR FROM p.expired_date));
 
 SELECT * FROM product AS p
-WHERE max(p.price) = p.price;
+WHERE p.price = (SELECT max(p.price) FROM product AS p);
 
-SELECT sum(p.name) t.name FROM product AS p
-GROUP BY p.type_id
-INNER JOIN type AS t;
+SELECT count(p.name), t.name FROM product AS p
+INNER JOIN product_type AS t
+ON p.type_id = t.id
+GROUP BY t.name;
 
 SELECT * FROM product AS p
-INNER JOIN type AS t
-ON t.name = 'СЫР' OR t.name = 'МОЛОКО';
+INNER JOIN product_type AS t
+ON t.name = 'сыр' AND t.id = p.type_id OR t.name = 'молоко' AND t.id = p.type_id;
 
-SELECT t.name FROM type AS t
+SELECT t.name FROM product_type AS t
 INNER JOIN product AS p
-GROUP BY p.name
-WHERE sum(p.name) < 10;
+ON t.id = p.type_id
+GROUP BY t.name
+HAVING count(p.name) < 10;
 
 SELECT p.name, t.name FROM product AS p
-INNER JOIN type AS t;
+INNER JOIN product_type AS t
+ON p.type_id = t.id;
