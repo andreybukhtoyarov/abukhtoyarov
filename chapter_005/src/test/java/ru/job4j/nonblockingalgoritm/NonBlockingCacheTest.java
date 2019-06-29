@@ -63,7 +63,10 @@ public class NonBlockingCacheTest {
         while (ready) {
             if (pool.isTerminated()) {
                 ready = false;
-                assertThat(exs.get().getMessage(), is("Versions do not match"));
+                Exception exception = exs.get();
+                if (exception != null) {
+                    assertThat(exception.getMessage(), is("Versions do not match"));
+                }
             }
         }
     }
