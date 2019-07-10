@@ -20,7 +20,8 @@
         <module>chapter_004</module>
         <module>chapter_005</module>
         <module>chapter_006</module>
-    </modules>
+		<module>chapter_007</module>
+	</modules>
 	
 	<dependencies>
 		<dependency>
@@ -45,6 +46,18 @@
 			<artifactId>mockito-core</artifactId>
 			<version>2.24.5</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.11.1</version>
 		</dependency>
 	</dependencies>
 	
