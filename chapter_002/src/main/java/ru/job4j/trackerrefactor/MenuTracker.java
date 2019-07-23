@@ -12,7 +12,7 @@ public class MenuTracker {
     /**Field with system input.*/
     private Input input;
     /**Field with task Tracker.*/
-    private Tracker tracker;
+    private ITracker tracker;
     /**Field with array of user actions.*/
     private UserAction[] actions = new UserAction[6];
     /**Field with array of range menu.*/
@@ -20,7 +20,7 @@ public class MenuTracker {
 
     MenuTracker(Input input, ITracker tracker) {
         this.input = input;
-        this.tracker = (Tracker) tracker;
+        this.tracker = tracker;
     }
 
     /**
@@ -75,7 +75,7 @@ public class MenuTracker {
          * @param tracker - tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Добавление новой языки --------------");
             String name = input.ask("Введите название заявки :");
             String description = input.ask("Введите описание заявки :");
@@ -104,7 +104,7 @@ public class MenuTracker {
          * @param tracker - tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Ищем заявку по id ------------");
             String id = input.ask("Введите id заявки :");
             Item item = tracker.findById(id);
@@ -133,7 +133,7 @@ public class MenuTracker {
          * @param tracker - tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Все заявки ------------");
             for (Item item : tracker.getAll()) {
                 System.out.println(String.format("%s %s", "id заявки :", item.getId()));
@@ -160,7 +160,7 @@ public class MenuTracker {
          * @param tracker - tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker tracker) {
             System.out.println("------------ Удаляем заявку по id ------------");
             String id = input.ask("Введите id заявки :");
             boolean failure = true;
@@ -194,7 +194,7 @@ class EditItem extends BaseAction {
      * @param tracker - tracker.
      */
     @Override
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         System.out.println("------------ Редактируем заявку по id ------------");
         String id = input.ask("Введите id заявки :");
         boolean failure = true;
@@ -230,7 +230,7 @@ class FindByName extends BaseAction {
      * @param tracker - tracker.
      */
     @Override
-    public void execute(Input input, Tracker tracker) {
+    public void execute(Input input, ITracker tracker) {
         System.out.println("------------ Ищем заявку по имени ------------");
         String name = input.ask("Введите имя заявки :");
         List<Item> items = tracker.findByName(name);

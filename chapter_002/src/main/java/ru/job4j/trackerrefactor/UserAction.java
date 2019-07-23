@@ -17,7 +17,7 @@ public interface UserAction {
      * @param input - input.
      * @param tracker - tracker.
      */
-    void execute(Input input, Tracker tracker);
+    void execute(Input input, ITracker tracker);
 
     /**
      * This method return what this method does.
