@@ -10,14 +10,14 @@ public class StartUI {
     /**Field with system input.*/
     private final Input input;
     /**Field with task Tracker.*/
-    private final Tracker tracker;
+    private final ITracker tracker;
 
     /**
      * Constructor StartUI.
      * @param input - system input.
      * @param tracker - task Tracker.
      */
-    protected StartUI(Input input, Tracker tracker) {
+    protected StartUI(Input input, ITracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }

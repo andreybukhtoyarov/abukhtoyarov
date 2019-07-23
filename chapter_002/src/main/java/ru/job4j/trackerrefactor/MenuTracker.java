@@ -18,9 +18,9 @@ public class MenuTracker {
     /**Field with array of range menu.*/
     private int[] range = {0, 1, 2, 3, 4, 5};
 
-    MenuTracker(Input input, Tracker tracker) {
+    MenuTracker(Input input, ITracker tracker) {
         this.input = input;
-        this.tracker = tracker;
+        this.tracker = (Tracker) tracker;
     }
 
     /**

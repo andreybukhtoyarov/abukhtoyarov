@@ -11,7 +11,7 @@ import java.util.function.Predicate;
  * @version %Id%.
  * @since 0.1.
  */
-public class Tracker {
+public class Tracker implements ITracker {
     /**Field array of items.*/
     private List<Item> items = new ArrayList<>();
 
