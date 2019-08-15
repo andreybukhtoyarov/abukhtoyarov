@@ -152,7 +152,7 @@ public class StoreSQL implements IStoreSQL, AutoCloseable {
      * @param number - число.
      * @return - количесвто цифр в числе.
      */
-    private int countDigits(long number){
+    private int countDigits(long number) {
         int result = 0;
         for (long match = 0L; number > match; ++result) {
             match = (match << 3) + (match << 1) + 9L;
