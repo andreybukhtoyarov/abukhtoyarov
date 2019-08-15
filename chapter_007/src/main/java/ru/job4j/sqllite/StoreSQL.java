@@ -123,7 +123,7 @@ public class StoreSQL implements IStoreSQL, AutoCloseable {
      * Выполняет executeBatch() переданные запросы.
      * @param requests - SQL запросы.
      */
-    public void reqUpdate(String[] requests) {
+    private void reqUpdate(String[] requests) {
         try (final Statement stmt = this.connection.createStatement()) {
             for (String req : requests) {
                 stmt.addBatch(req);
@@ -152,7 +152,7 @@ public class StoreSQL implements IStoreSQL, AutoCloseable {
      * @param number - число.
      * @return - количесвто цифр в числе.
      */
-    public int countDigits(long number){
+    private int countDigits(long number){
         int result = 0;
         for (long match = 0L; number > match; ++result) {
             match = (match << 3) + (match << 1) + 9L;
@@ -178,7 +178,7 @@ public class StoreSQL implements IStoreSQL, AutoCloseable {
                 int intInsert = 1;
                 for (int order = 0; order < size / numberOrder; ++order) {
                     afterMillion(statement, size, numberOrder, intInsert);
-                    intInsert = intInsert + numberOrder;
+                    intInsert += numberOrder;
                 }
             }
         } catch (SQLException e) {

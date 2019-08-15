@@ -37,6 +37,5 @@ public class ConvertXSQT {
         } catch (TransformerException e) {
             LOG.error("In convert {}", e);
         }
-
     }
 }
