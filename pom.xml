@@ -107,4 +107,25 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>test</id>
+			<properties>
+				<db.url>jdbc:postgresql://127.0.0.1:5432/job4j_tracker</db.url>
+				<db.username>andrey</db.username>
+				<db.password>rtq256hj</db.password>
+				<db.driver>org.postgresql.Driver</db.driver>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<db.url>jdbc:postgresql://127.0.0.1:5432/job4j_tracker</db.url>
+				<db.username>andrey</db.username>
+				<db.password>rtq256hj</db.password>
+				<db.driver>org.postgresql.Driver</db.driver>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>
